@@ -46,7 +46,7 @@ export default async function RecruitmentPage() {
   const vacancies = openVacancies(company);
   const channels = recruitmentChannels(company);
   const projects = company.photos.projects;
-  const pick = (src: string) => findPhoto(projects, `/images/proyectos/${src}`);
+  const pick = (filename: string) => findPhoto(projects, filename);
 
   const heroPhoto = pick("instalacion-conductos-fachada-01.jpg");
   const discoverPhotos = [
@@ -157,34 +157,22 @@ export default async function RecruitmentPage() {
       </section>
 
       {/* D. DÓNDE ENCAJAS TÚ */}
-      <section aria-labelledby="encajas-titulo" className="bg-white py-16 sm:py-24">
+      <section aria-labelledby="encajas-titulo" className="bg-white pt-16 pb-10 sm:pt-24 sm:pb-14">
         <Container>
           <h2 id="encajas-titulo" className="text-3xl font-bold sm:text-4xl">
             ¿Dónde encajas tú?
           </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            <div className="rounded-xl border border-line p-8">
-              <p className="text-sm font-bold uppercase tracking-[0.1em] text-accent">Con experiencia</p>
-              <h3 className="mt-2 text-2xl font-bold">Ya conoces el oficio</h3>
-              <p className="mt-3 leading-relaxed text-muted">
-                Si tienes experiencia en ventilación, climatización, montaje de conductos o algún oficio relacionado
-                de la construcción, puedes presentarte directamente. Valoramos el conocimiento técnico, la
-                experiencia práctica y la responsabilidad en obra.
-              </p>
-              <ButtonLink href="/trabaja-con-nosotros?perfil=experiencia#aplicar" className="mt-6">
-                Quiero presentar mi candidatura
-              </ButtonLink>
-            </div>
-            <div className="rounded-xl border border-line p-8">
-              <p className="text-sm font-bold uppercase tracking-[0.1em] text-accent">Sin experiencia</p>
-              <h3 className="mt-2 text-2xl font-bold">Quieres aprender un oficio</h3>
-              <p className="mt-3 leading-relaxed text-muted">
-                Si no tienes experiencia previa pero te interesa desarrollar un oficio técnico, también puedes
-                escribirnos. Valoramos la curiosidad, la disposición a aprender, el compromiso y la capacidad de
-                trabajar en equipo. No podemos confirmar de antemano si tu perfil encaja con las necesidades
-                actuales del equipo, pero nos interesa conocerlo.
-              </p>
-              <ButtonLink href="/trabaja-con-nosotros?perfil=aprender#aplicar" variant="secondary" className="mt-6">
+          <div className="mt-6 max-w-4xl">
+            <p className="text-lg leading-relaxed text-muted">
+              Si tienes experiencia en ventilación, climatización, montaje de conductos o algún oficio relacionado
+              de la construcción, puedes presentarte directamente: valoramos el conocimiento técnico, la
+              experiencia práctica y la responsabilidad en obra. Y si no tienes experiencia previa pero te
+              interesa desarrollar un oficio técnico, también puedes escribirnos — valoramos la curiosidad, la
+              disposición a aprender y el compromiso. No podemos confirmar de antemano si tu perfil encaja con
+              las necesidades actuales del equipo, pero nos interesa conocerlo.
+            </p>
+            <div className="mt-6 flex justify-center">
+              <ButtonLink href="/trabaja-con-nosotros#aplicar">
                 Quiero presentar mi candidatura
               </ButtonLink>
             </div>
@@ -210,7 +198,7 @@ export default async function RecruitmentPage() {
       ) : null}
 
       {/* E. FORMA PARTE DE OLTENIA */}
-      <section id="aplicar" aria-labelledby="aplicar-titulo" className="scroll-mt-16 bg-white py-16 sm:py-24">
+      <section id="aplicar" aria-labelledby="aplicar-titulo" className="scroll-mt-16 bg-white pt-10 pb-16 sm:pt-14 sm:pb-24">
         <Container>
           <div className="grid gap-12 lg:grid-cols-[1fr_20rem]">
             <div>

@@ -39,7 +39,7 @@ export default async function ServicesPage() {
   ].filter((fact): fact is { label: string; value: string } => Boolean(fact));
 
   const projects = company.photos.projects;
-  const pick = (src: string) => findPhoto(projects, `/images/proyectos/${src}`);
+  const pick = (filename: string) => findPhoto(projects, filename);
 
   const heroPhoto = pick("instalacion-conductos-fachada-01.jpg");
   const equipmentPhotos = onlyPhotos([

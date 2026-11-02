@@ -17,10 +17,15 @@ export type SanityPhotoFragment = {
     _id: string;
     url: string;
     metadata: { dimensions: { width: number; height: number } | null } | null;
+    originalFilename?: string | null;
   } | null;
   hotspot?: { x: number; y: number } | null;
   alt?: string | null;
   caption?: string | null;
+  /** Only present on the `photo` document type. Embedded single-purpose images
+   * (imageWithAlt — team/service/page photos) don't carry this field at all:
+   * placing one deliberately in a named slot IS the approval, so it defaults
+   * to approved. The `photo` collection's explicit true/false always wins. */
   publicationApproved?: boolean | null;
 } | null;
 
@@ -41,6 +46,7 @@ export function toPhoto(fragment: SanityPhotoFragment, fallbackWidth = 1600): Ph
     width,
     height,
     caption: fragment.caption?.trim() || null,
-    publicationApproved: fragment.publicationApproved ?? false,
+    publicationApproved: fragment.publicationApproved ?? true,
+    originalFilename: fragment.asset.originalFilename ?? null,
   };
 }

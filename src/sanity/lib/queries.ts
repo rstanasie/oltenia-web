@@ -1,7 +1,7 @@
 import { defineQuery } from "next-sanity";
 
-const imageFragment = `{"asset": asset->{_id, url, metadata{dimensions}}, hotspot}`;
-const imageWithAltFragment = `{"asset": asset->{_id, url, metadata{dimensions}}, hotspot, alt}`;
+const imageFragment = `{"asset": asset->{_id, url, metadata{dimensions}, originalFilename}, hotspot}`;
+const imageWithAltFragment = `{"asset": asset->{_id, url, metadata{dimensions}, originalFilename}, hotspot, alt}`;
 const postalAddressFragment = `{street, postalCode, locality, province, country}`;
 const paragraphs = (field: string) => field; // array-of-text fields project as-is
 
@@ -99,7 +99,7 @@ export const SITE_QUERY = defineQuery(`{
     drivingLicence, schedule, contractType, salaryRange, benefits, applicationInstructions
   },
   "photos": *[_type == "photo"] | order(order asc) {
-    "asset": image.asset->{_id, url, metadata{dimensions}},
+    "asset": image.asset->{_id, url, metadata{dimensions}, originalFilename},
     "hotspot": image.hotspot,
     alt, caption, publicationApproved, collection, isHistoricalArchive
   },

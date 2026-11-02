@@ -13,7 +13,7 @@ export type ContractType =
   | "autonomo";
 
 export type Photo = {
-  /** Path inside /public, e.g. "/images/proyectos/obra-01.jpg". */
+  /** Image URL — a Sanity CDN URL, already sized/optimized. */
   src: string;
   /** Description of what the photo shows. Required and must be specific. */
   alt: string;
@@ -22,6 +22,8 @@ export type Photo = {
   caption: string | null;
   /** Set to true only when there is written permission to publish this photo. */
   publicationApproved: boolean;
+  /** Original uploaded filename, if known. Used to hand-pick a specific photo for editorial placement — see findPhoto(). */
+  originalFilename: string | null;
 };
 
 export type PostalAddress = {

@@ -19,9 +19,9 @@ export function photosByCaptions(photos: Photo[], captions: string[]): Photo[] {
   return photos.filter((photo) => captions.includes(photo.caption ?? ""));
 }
 
-/** Looks up one specific approved photo by its src, for hand-picked editorial placement. */
-export function findPhoto(photos: Photo[], src: string): Photo | null {
-  return approvedPhotos(photos).find((p) => p.src === src) ?? null;
+/** Looks up one specific approved photo by its original uploaded filename, for hand-picked editorial placement. */
+export function findPhoto(photos: Photo[], originalFilename: string): Photo | null {
+  return approvedPhotos(photos).find((p) => p.originalFilename === originalFilename) ?? null;
 }
 
 export function customerChannels(company: CompanyContent): ContactChannels {
