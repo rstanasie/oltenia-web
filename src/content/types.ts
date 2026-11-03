@@ -93,14 +93,24 @@ export type Vacancy = {
   datePosted: string | null;
   /** ISO date (YYYY-MM-DD) after which the vacancy is no longer valid. */
   validThrough: string | null;
+  /** Short description for the vacancy card, e.g. "Primeros pasos". */
+  shortDescription: string | null;
   location: string | null;
   summary: string | null;
+  /** "Qué harás". */
   responsibilities: string[];
-  requiredExperience: string[];
-  requiredQualifications: string[];
+  /** "Qué necesitas" — genuinely required for this role. */
+  essentialRequirements: string[];
+  /** "Qué necesitas" — valued but not required. */
+  desirableRequirements: string[];
+  /** "Qué puedes aprender" in this role. */
+  learningOpportunities: string[];
   drivingLicence: string | null;
   schedule: string | null;
+  /** Confirmed travel expectations for this specific role, if any. */
+  travelExpectations: string | null;
   contractType: ContractType | null;
+  /** Internal draft only — keep null until the owners approve a figure to publish. */
   salaryRange: {
     min: number;
     max: number;

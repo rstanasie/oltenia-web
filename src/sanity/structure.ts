@@ -9,6 +9,7 @@ const singletonLabels: Record<(typeof singletonTypes)[number], string> = {
   homePage: "Página de inicio",
   servicesPage: "Página de servicios",
   recruitmentPage: "Página «Trabaja con nosotros»",
+  workingConditions: "Condiciones de trabajo",
   enDetallePage: "Página «En detalle»",
   seoSettings: "SEO por página",
 };
@@ -34,7 +35,6 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       S.documentTypeListItem("teamMember").title("Equipo"),
       S.documentTypeListItem("service").title("Servicios"),
-      S.documentTypeListItem("vacancy").title("Ofertas de empleo"),
-      S.documentTypeListItem("careerStage").title("Etapas del oficio"),
+      S.documentTypeListItem("vacancy").title("Puestos"),
       S.documentTypeListItem("photo").title("Fotos"),
     ]);

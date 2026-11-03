@@ -1,4 +1,3 @@
-import type { CareerStage, RelatedContentLink } from "@/data/careerStages";
 import type {
   CompanyContent,
   ContractType,
@@ -25,6 +24,53 @@ function strings(value: unknown): string[] {
 }
 
 export type RawSeoEntry = { metaTitle?: string | null; metaDescription?: string | null } | null | undefined;
+
+export type RawVacancy = {
+  id?: string | null;
+  status?: "open" | "closed";
+  title?: string;
+  shortDescription?: string | null;
+  datePosted?: string | null;
+  validThrough?: string | null;
+  location?: string | null;
+  summary?: string | null;
+  responsibilities?: string[];
+  essentialRequirements?: string[];
+  desirableRequirements?: string[];
+  learningOpportunities?: string[];
+  drivingLicence?: string | null;
+  schedule?: string | null;
+  travelExpectations?: string | null;
+  contractType?: ContractType | null;
+  salaryRange?: { min: number; max: number; period: "hora" | "mes" | "año"; gross: boolean } | null;
+  benefits?: string[];
+  applicationInstructions?: string | null;
+} | null;
+
+export function toVacancy(v: RawVacancy): Vacancy | null {
+  if (!v) return null;
+  return {
+    id: v.id ?? "",
+    status: v.status ?? "closed",
+    title: v.title ?? "",
+    shortDescription: v.shortDescription ?? null,
+    datePosted: v.datePosted ?? null,
+    validThrough: v.validThrough ?? null,
+    location: v.location ?? null,
+    summary: v.summary ?? null,
+    responsibilities: strings(v.responsibilities),
+    essentialRequirements: strings(v.essentialRequirements),
+    desirableRequirements: strings(v.desirableRequirements),
+    learningOpportunities: strings(v.learningOpportunities),
+    drivingLicence: v.drivingLicence ?? null,
+    schedule: v.schedule ?? null,
+    travelExpectations: v.travelExpectations ?? null,
+    contractType: v.contractType ?? null,
+    salaryRange: v.salaryRange ? { ...v.salaryRange, currency: "EUR" } : null,
+    benefits: strings(v.benefits),
+    applicationInstructions: v.applicationInstructions ?? null,
+  };
+}
 
 export type RawSiteQueryResult = {
   siteSettings: {
@@ -83,7 +129,21 @@ export type RawSiteQueryResult = {
   } | null;
   homePage: { heroEyebrow?: string; heroHeadline?: string; heroSubtext?: string; primaryCtaLabel?: string; secondaryCtaLabel?: string } | null;
   servicesPage: { heroEyebrow?: string; heroHeading?: string; heroIntroPara1?: string; heroIntroPara2?: string } | null;
-  recruitmentPage: { heroEyebrow?: string; heroHeadline?: string; heroSubtext?: string; primaryCtaLabel?: string; secondaryCtaLabel?: string } | null;
+  recruitmentPage: { heroEyebrow?: string; heroHeadline?: string; heroSubtext?: string; primaryCtaLabel?: string } | null;
+  workingConditions: {
+    employmentStatement?: string | null;
+    scheduleStatement?: string | null;
+    vehicleStatement?: string | null;
+    vehicleArrangementNote?: string | null;
+    travelTimeStatement?: string | null;
+    travelJourneysNote?: string | null;
+    travelDestinationsNote?: string | null;
+    overnightStaysNote?: string | null;
+    expensesCoveredNote?: string | null;
+    trainingStatement?: string | null;
+    overtimeStatement?: string | null;
+    companyBaseNote?: string | null;
+  } | null;
   enDetallePage: {
     introText?: string;
     experienceHeading?: string;
@@ -121,37 +181,8 @@ export type RawSiteQueryResult = {
     details?: string[];
     photo?: SanityPhotoFragment;
   }[];
-  vacancies: {
-    id?: string | null;
-    status?: "open" | "closed";
-    title?: string;
-    datePosted?: string | null;
-    validThrough?: string | null;
-    location?: string | null;
-    summary?: string | null;
-    responsibilities?: string[];
-    requiredExperience?: string[];
-    requiredQualifications?: string[];
-    drivingLicence?: string | null;
-    schedule?: string | null;
-    contractType?: ContractType | null;
-    salaryRange?: { min: number; max: number; period: "hora" | "mes" | "año"; gross: boolean } | null;
-    benefits?: string[];
-    applicationInstructions?: string | null;
-  }[];
+  vacancies: RawVacancy[];
   photos: (SanityPhotoFragment & { collection?: "proyectos" | "equipo" | "instalaciones"; isHistoricalArchive?: boolean })[];
-  careerStages: {
-    id?: string;
-    title?: string;
-    subtitle?: string;
-    description?: string;
-    responsibilities?: string[];
-    competencies?: string[];
-    quote?: string | null;
-    note?: string | null;
-    relatedContent?: RelatedContentLink[];
-    order?: number;
-  }[];
 };
 
 /** Builds the app's existing CompanyContent shape from the raw Sanity query result, so every
@@ -179,24 +210,7 @@ export function toCompanyContent(raw: RawSiteQueryResult): CompanyContent {
 
   const logoPhoto = toPhoto(raw.siteSettings?.logo ?? null);
 
-  const vacancies: Vacancy[] = raw.vacancies.map((v) => ({
-    id: v.id ?? "",
-    status: v.status ?? "closed",
-    title: v.title ?? "",
-    datePosted: v.datePosted ?? null,
-    validThrough: v.validThrough ?? null,
-    location: v.location ?? null,
-    summary: v.summary ?? null,
-    responsibilities: strings(v.responsibilities),
-    requiredExperience: strings(v.requiredExperience),
-    requiredQualifications: strings(v.requiredQualifications),
-    drivingLicence: v.drivingLicence ?? null,
-    schedule: v.schedule ?? null,
-    contractType: v.contractType ?? null,
-    salaryRange: v.salaryRange ? { ...v.salaryRange, currency: "EUR" } : null,
-    benefits: strings(v.benefits),
-    applicationInstructions: v.applicationInstructions ?? null,
-  }));
+  const vacancies: Vacancy[] = raw.vacancies.map((v) => toVacancy(v)).filter((v): v is Vacancy => v !== null);
 
   return {
     publication: {
@@ -282,21 +296,6 @@ export function toCompanyContent(raw: RawSiteQueryResult): CompanyContent {
   };
 }
 
-export function toCareerStages(raw: RawSiteQueryResult["careerStages"]): CareerStage[] {
-  return raw.map((s, index) => ({
-    id: s.id ?? `stage-${index}`,
-    displayOrder: s.order ?? index + 1,
-    title: s.title ?? "",
-    subtitle: s.subtitle ?? "",
-    description: s.description ?? "",
-    responsibilities: strings(s.responsibilities),
-    competencies: strings(s.competencies),
-    quote: s.quote ?? undefined,
-    note: s.note ?? undefined,
-    relatedContent: s.relatedContent ?? [],
-  }));
-}
-
 export type HomePageContent = {
   heroEyebrow: string;
   heroHeadline: string;
@@ -338,7 +337,6 @@ export type RecruitmentPageContent = {
   heroHeadline: string;
   heroSubtext: string;
   primaryCtaLabel: string;
-  secondaryCtaLabel: string;
 };
 
 export function toRecruitmentPage(raw: RawSiteQueryResult["recruitmentPage"]): RecruitmentPageContent {
@@ -348,9 +346,45 @@ export function toRecruitmentPage(raw: RawSiteQueryResult["recruitmentPage"]): R
     heroSubtext:
       raw?.heroSubtext ??
       "Detrás de cada instalación hay conocimientos, precisión y experiencia. Descubre cómo es trabajar en ventilación y climatización y todo lo que puedes llegar a aprender.",
-    primaryCtaLabel: raw?.primaryCtaLabel ?? "Descubre tu camino",
-    secondaryCtaLabel: raw?.secondaryCtaLabel ?? "Quiero trabajar en Oltenia",
+    primaryCtaLabel: raw?.primaryCtaLabel ?? "Puestos abiertos",
   };
+}
+
+export type WorkingConditionsContent = {
+  employmentStatement: string | null;
+  scheduleStatement: string | null;
+  vehicleStatement: string | null;
+  vehicleArrangementNote: string | null;
+  travelTimeStatement: string | null;
+  travelJourneysNote: string | null;
+  travelDestinationsNote: string | null;
+  overnightStaysNote: string | null;
+  expensesCoveredNote: string | null;
+  trainingStatement: string | null;
+  overtimeStatement: string | null;
+  companyBaseNote: string | null;
+  /** True once at least one field above is actually confirmed — lets the page hide the whole section otherwise. */
+  hasContent: boolean;
+};
+
+export function toWorkingConditions(raw: RawSiteQueryResult["workingConditions"]): WorkingConditionsContent {
+  const field = (value: string | null | undefined) => value?.trim() || null;
+  const result = {
+    employmentStatement: field(raw?.employmentStatement),
+    scheduleStatement: field(raw?.scheduleStatement),
+    vehicleStatement: field(raw?.vehicleStatement),
+    vehicleArrangementNote: field(raw?.vehicleArrangementNote),
+    travelTimeStatement: field(raw?.travelTimeStatement),
+    travelJourneysNote: field(raw?.travelJourneysNote),
+    travelDestinationsNote: field(raw?.travelDestinationsNote),
+    overnightStaysNote: field(raw?.overnightStaysNote),
+    expensesCoveredNote: field(raw?.expensesCoveredNote),
+    trainingStatement: field(raw?.trainingStatement),
+    overtimeStatement: field(raw?.overtimeStatement),
+    companyBaseNote: field(raw?.companyBaseNote),
+  };
+  const hasContent = Object.values(result).some((v) => v !== null);
+  return { ...result, hasContent };
 }
 
 export type EnDetallePageContent = {

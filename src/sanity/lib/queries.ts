@@ -5,6 +5,13 @@ const imageWithAltFragment = `{"asset": asset->{_id, url, metadata{dimensions}, 
 const postalAddressFragment = `{street, postalCode, locality, province, country}`;
 const paragraphs = (field: string) => field; // array-of-text fields project as-is
 
+const vacancyFields = `
+  "id": slug.current,
+  status, title, shortDescription, datePosted, validThrough, location, summary,
+  responsibilities, essentialRequirements, desirableRequirements, learningOpportunities,
+  drivingLicence, schedule, travelExpectations, contractType, salaryRange, benefits, applicationInstructions
+`;
+
 export const SITE_QUERY = defineQuery(`{
   "siteSettings": *[_type == "siteSettings"][0]{
     brandName,
@@ -67,7 +74,13 @@ export const SITE_QUERY = defineQuery(`{
     heroEyebrow, heroHeading, heroIntroPara1, heroIntroPara2
   },
   "recruitmentPage": *[_type == "recruitmentPage"][0]{
-    heroEyebrow, heroHeadline, heroSubtext, primaryCtaLabel, secondaryCtaLabel
+    heroEyebrow, heroHeadline, heroSubtext, primaryCtaLabel
+  },
+  "workingConditions": *[_type == "workingConditions"][0]{
+    employmentStatement, scheduleStatement,
+    vehicleStatement, vehicleArrangementNote,
+    travelTimeStatement, travelJourneysNote, travelDestinationsNote, overnightStaysNote, expensesCoveredNote,
+    trainingStatement, overtimeStatement, companyBaseNote
   },
   "enDetallePage": *[_type == "enDetallePage"][0]{
     introText,
@@ -92,20 +105,14 @@ export const SITE_QUERY = defineQuery(`{
   "services": *[_type == "service"] | order(order asc) {
     serviceId, name, summary, activities, details, "photo": photo${imageWithAltFragment}
   },
-  "vacancies": *[_type == "vacancy"] {
-    "id": slug.current,
-    status, title, datePosted, validThrough, location, summary,
-    responsibilities, requiredExperience, requiredQualifications,
-    drivingLicence, schedule, contractType, salaryRange, benefits, applicationInstructions
-  },
+  "vacancies": *[_type == "vacancy"] {${vacancyFields}},
   "photos": *[_type == "photo"] | order(order asc) {
     "asset": image.asset->{_id, url, metadata{dimensions}, originalFilename},
     "hotspot": image.hotspot,
     alt, caption, publicationApproved, collection, isHistoricalArchive
-  },
-  "careerStages": *[_type == "careerStage"] | order(order asc) {
-    "id": _id,
-    title, subtitle, description, responsibilities, competencies, quote, note,
-    relatedContent[]{label, href}, order
   }
 }`);
+
+export const VACANCY_SLUGS_QUERY = defineQuery(`*[_type == "vacancy" && defined(slug.current)]{"slug": slug.current}`);
+
+export const VACANCY_BY_SLUG_QUERY = defineQuery(`*[_type == "vacancy" && slug.current == $slug][0]{${vacancyFields}}`);

@@ -59,8 +59,8 @@ export function jobPostingData(company: CompanyContent, vacancy: Vacancy, indexa
   const description = [
     vacancy.summary,
     ...vacancy.responsibilities,
-    ...vacancy.requiredExperience,
-    ...vacancy.requiredQualifications,
+    ...vacancy.essentialRequirements,
+    ...vacancy.desirableRequirements,
   ]
     .map((line) => `<p>${line.replace(/[<>&]/g, "")}</p>`)
     .join("");

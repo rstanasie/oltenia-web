@@ -7,7 +7,7 @@ import { mailtoHref, whatsappHref } from "@/lib/contact";
 
 const EXPERIENCE_LEVELS = [
   "Sin experiencia",
-  "Ayudante / Peón",
+  "Peón / Ayudante",
   "Oficial de tercera",
   "Oficial de segunda",
   "Oficial de primera",
@@ -38,12 +38,19 @@ export function ApplicationForm({
 }) {
   const searchParams = useSearchParams();
   const presetProfile = searchParams.get("perfil");
+  const presetPuesto = searchParams.get("puesto");
   const formId = useId();
+
+  const initialExperience = presetPuesto && EXPERIENCE_LEVELS.includes(presetPuesto)
+    ? presetPuesto
+    : presetProfile === "aprender"
+      ? "Sin experiencia"
+      : "";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [experience, setExperience] = useState(presetProfile === "aprender" ? "Sin experiencia" : "");
+  const [experience, setExperience] = useState(initialExperience);
   const [area, setArea] = useState("");
   const [message, setMessage] = useState("");
 

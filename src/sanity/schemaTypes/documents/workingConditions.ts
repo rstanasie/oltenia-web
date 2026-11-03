@@ -1,0 +1,112 @@
+import { defineField, defineType } from "sanity";
+
+export const workingConditions = defineType({
+  name: "workingConditions",
+  title: "Condiciones de trabajo",
+  type: "document",
+  description:
+    "Condiciones generales mostradas en «Trabaja con nosotros», después de «Mucho más que instalar conductos». Comunica el cumplimiento legal con hechos concretos, no como eslogan. Cada campo se oculta si está vacío — no escribas «pendiente de confirmar» en ningún campo: déjalo vacío y coméntalo aparte con quien gestiona el sitio.",
+  groups: [
+    { name: "employment", title: "Contratación y horario", default: true },
+    { name: "travel", title: "Vehículo y desplazamientos" },
+    { name: "other", title: "Formación, horas extra y base" },
+  ],
+  fields: [
+    defineField({
+      name: "employmentStatement",
+      title: "Contratación y retribución",
+      type: "text",
+      rows: 2,
+      group: "employment",
+      description: "Compromiso general de contratación correcta y pago puntual.",
+    }),
+    defineField({
+      name: "scheduleStatement",
+      title: "Horario",
+      type: "text",
+      rows: 2,
+      group: "employment",
+      description: "Deja vacío hasta confirmar el horario exacto (p. ej. horas semanales) frente al calendario anual aplicable.",
+    }),
+
+    defineField({
+      name: "vehicleStatement",
+      title: "Vehículo de empresa",
+      type: "text",
+      rows: 2,
+      group: "travel",
+    }),
+    defineField({
+      name: "vehicleArrangementNote",
+      title: "Vehículo: compartido o individual",
+      type: "text",
+      rows: 2,
+      group: "travel",
+      description: "Deja vacío hasta confirmar si el vehículo es compartido entre el equipo o asignado individualmente.",
+    }),
+    defineField({
+      name: "travelTimeStatement",
+      title: "Desplazamientos como tiempo de trabajo",
+      type: "text",
+      rows: 2,
+      group: "travel",
+    }),
+    defineField({
+      name: "travelJourneysNote",
+      title: "Qué trayectos cuentan",
+      type: "text",
+      rows: 2,
+      group: "travel",
+      description: "Deja vacío hasta aclarar qué trayectos concretos se cuentan como tiempo de trabajo (p. ej. solo entre obras, o también desde casa).",
+    }),
+    defineField({
+      name: "travelDestinationsNote",
+      title: "Destinos y frecuencia de desplazamiento",
+      type: "text",
+      rows: 2,
+      group: "travel",
+      description: "Deja vacío hasta tener esta información confirmada. No la inventes.",
+    }),
+    defineField({
+      name: "overnightStaysNote",
+      title: "Pernoctas",
+      type: "text",
+      rows: 2,
+      group: "travel",
+      description: "Deja vacío hasta confirmar si el trabajo implica pernoctar fuera de casa.",
+    }),
+    defineField({
+      name: "expensesCoveredNote",
+      title: "Gastos cubiertos en desplazamiento",
+      type: "text",
+      rows: 2,
+      group: "travel",
+      description: "Deja vacío hasta confirmar qué gastos de desplazamiento, alojamiento o dietas cubre la empresa.",
+    }),
+
+    defineField({
+      name: "trainingStatement",
+      title: "Formación y aprendizaje práctico",
+      type: "text",
+      rows: 2,
+      group: "other",
+      description: "Solo arreglos de formación realmente confirmados. No describas un programa formal si no existe como tal.",
+    }),
+    defineField({
+      name: "overtimeStatement",
+      title: "Horas extra",
+      type: "text",
+      rows: 2,
+      group: "other",
+    }),
+    defineField({
+      name: "companyBaseNote",
+      title: "La base de Oltenia",
+      type: "text",
+      rows: 2,
+      group: "other",
+      description: "Un detalle humano, no un beneficio — p. ej. la base como punto de encuentro del equipo.",
+    }),
+  ],
+  preview: { prepare: () => ({ title: "Condiciones de trabajo" }) },
+});

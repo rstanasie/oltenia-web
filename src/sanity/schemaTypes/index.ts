@@ -2,10 +2,8 @@ import type { SchemaTypeDefinition } from "sanity";
 import { imageWithAlt } from "./objects/imageWithAlt";
 import { openingHour } from "./objects/openingHour";
 import { postalAddress } from "./objects/postalAddress";
-import { relatedContentLink } from "./objects/relatedContentLink";
 import { salaryRange } from "./objects/salaryRange";
 
-import { careerStage } from "./documents/careerStage";
 import { companyInfo } from "./documents/companyInfo";
 import { contactInfo } from "./documents/contactInfo";
 import { enDetallePage } from "./documents/enDetallePage";
@@ -19,6 +17,7 @@ import { servicesPage } from "./documents/servicesPage";
 import { siteSettings } from "./documents/siteSettings";
 import { teamMember } from "./documents/teamMember";
 import { vacancy } from "./documents/vacancy";
+import { workingConditions } from "./documents/workingConditions";
 
 /** Singleton documents: exactly one instance each, edited in place (no create/delete in the Studio UI). */
 export const singletonTypes = [
@@ -29,6 +28,7 @@ export const singletonTypes = [
   "homePage",
   "servicesPage",
   "recruitmentPage",
+  "workingConditions",
   "enDetallePage",
   "seoSettings",
 ] as const;
@@ -38,7 +38,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   postalAddress,
   openingHour,
   imageWithAlt,
-  relatedContentLink,
   salaryRange,
   // Singletons
   siteSettings,
@@ -48,6 +47,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   homePage,
   servicesPage,
   recruitmentPage,
+  workingConditions,
   enDetallePage,
   seoSettings,
   // Collections
@@ -55,5 +55,4 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   service,
   vacancy,
   photo,
-  careerStage,
 ];

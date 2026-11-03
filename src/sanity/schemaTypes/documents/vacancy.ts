@@ -29,35 +29,60 @@ export const vacancy = defineType({
       initialValue: "closed",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "shortDescription",
+      title: "Descripción breve (para la tarjeta)",
+      type: "string",
+      group: "main",
+      description: 'Ej. "Primeros pasos" o "Trabajo autónomo". No repitas aquí lo que ya dice la introducción de la sección.',
+    }),
     defineField({ name: "location", title: "Ubicación", type: "string", group: "main" }),
     defineField({
       name: "summary",
-      title: "Resumen del puesto",
+      title: "Introducción del puesto",
       type: "text",
       rows: 3,
       group: "main",
       description: "Obligatorio para publicar la oferta como abierta.",
       validation: (Rule) => Rule.custom((value, context) => {
         const doc = context.document as { status?: string } | undefined;
-        if (doc?.status === "open" && !value) return "Las ofertas abiertas necesitan un resumen.";
+        if (doc?.status === "open" && !value) return "Las ofertas abiertas necesitan una introducción.";
         return true;
       }),
     }),
     defineField({ name: "datePosted", title: "Fecha de publicación", type: "date", group: "main" }),
     defineField({ name: "validThrough", title: "Válida hasta", type: "date", group: "main" }),
 
-    defineField({ name: "responsibilities", title: "Funciones", type: "array", of: [{ type: "string" }], group: "details" }),
-    defineField({ name: "requiredExperience", title: "Experiencia requerida", type: "array", of: [{ type: "string" }], group: "details" }),
-    defineField({ name: "requiredQualifications", title: "Formación y requisitos", type: "array", of: [{ type: "string" }], group: "details" }),
+    defineField({ name: "responsibilities", title: "Qué harás", type: "array", of: [{ type: "string" }], group: "details" }),
+    defineField({
+      name: "essentialRequirements",
+      title: "Qué necesitas — imprescindible",
+      type: "array",
+      of: [{ type: "string" }],
+      group: "details",
+      description: "Solo lo realmente imprescindible para hacer el trabajo. No añadas requisitos que no sean necesarios.",
+    }),
+    defineField({
+      name: "desirableRequirements",
+      title: "Qué necesitas — valorable",
+      type: "array",
+      of: [{ type: "string" }],
+      group: "details",
+      description: "Se valora pero no es obligatorio para presentarse.",
+    }),
+    defineField({ name: "learningOpportunities", title: "Qué puedes aprender", type: "array", of: [{ type: "string" }], group: "details" }),
     defineField({ name: "drivingLicence", title: "Carné de conducir", type: "string", group: "details" }),
     defineField({ name: "benefits", title: "Qué se ofrece", type: "array", of: [{ type: "string" }], group: "details", description: "Solo condiciones reales." }),
     defineField({ name: "applicationInstructions", title: "Cómo presentarse", type: "text", rows: 2, group: "details" }),
 
+    defineField({ name: "schedule", title: "Horario", type: "string", group: "conditions" }),
     defineField({
-      name: "schedule",
-      title: "Horario",
-      type: "string",
+      name: "travelExpectations",
+      title: "Desplazamientos para este puesto",
+      type: "text",
+      rows: 2,
       group: "conditions",
+      description: "Solo si este puesto concreto tiene expectativas de desplazamiento distintas de las condiciones generales.",
     }),
     defineField({
       name: "contractType",
@@ -75,7 +100,14 @@ export const vacancy = defineType({
         ],
       },
     }),
-    defineField({ name: "salaryRange", title: "Salario", type: "salaryRange", group: "conditions" }),
+    defineField({
+      name: "salaryRange",
+      title: "Salario",
+      type: "salaryRange",
+      group: "conditions",
+      description:
+        "Deja vacío hasta que el rango esté aprobado por la empresa y comprobado contra el convenio aplicable. No publiques una cifra sin esa confirmación.",
+    }),
   ],
   orderings: [{ title: "Más recientes primero", name: "datePostedDesc", by: [{ field: "datePosted", direction: "desc" }] }],
   preview: {

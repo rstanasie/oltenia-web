@@ -137,8 +137,18 @@ async function main() {
     heroHeadline: "Un oficio que se aprende trabajando.",
     heroSubtext:
       "Detrás de cada instalación hay conocimientos, precisión y experiencia. Descubre cómo es trabajar en ventilación y climatización y todo lo que puedes llegar a aprender.",
-    primaryCtaLabel: "Descubre tu camino",
-    secondaryCtaLabel: "Quiero trabajar en Oltenia",
+    primaryCtaLabel: "Puestos abiertos",
+  }));
+
+  // Confirmed general statements only — anything not explicitly confirmed stays empty
+  // and is listed for the owners instead (see CONTENT_CHECKLIST.md).
+  await ensureDocument("workingConditions", "workingConditions", async () => ({
+    employmentStatement: "Contratación formalizada correctamente, con retribución transparente y pagos puntuales.",
+    vehicleStatement: "La empresa proporciona vehículo para los desplazamientos de trabajo.",
+    travelTimeStatement: "Los desplazamientos de trabajo se cuentan y se pagan como tiempo de trabajo.",
+    overtimeStatement:
+      "Las horas extra son voluntarias: se registran y se compensan según los términos y límites legales aplicables.",
+    companyBaseNote: "La base de Oltenia es el punto de encuentro del equipo antes de salir a cada obra — con su máquina de café de rigor.",
   }));
 
   await ensureDocument("seoSettings", "seoSettings", async () => ({}));
@@ -262,7 +272,7 @@ async function main() {
     { id: "photo-textiles-05", file: "conductos-textiles-05.jpg", alt: "Conducto circular con toberas de difusión repartidas a lo largo del recorrido, instalado en una nave industrial.", caption: "Conductos textiles y difusión del aire", order: 14 },
     { id: "photo-aire-acondicionado-exterior-01", file: "aire-acondicionado-exterior-01.jpg", alt: "Unidad exterior de aire acondicionado instalada sobre bancada de hormigón en una cubierta.", caption: "Equipos de climatización", order: 15 },
     { id: "photo-equipos-climatizacion-01", file: "equipos-climatizacion-01.jpg", alt: "Unidad de tratamiento de aire con panel de control, conectada a conductos circulares en el interior de una nave.", caption: "Equipos de climatización", order: 16 },
-    { id: "photo-equipos-climatizacion-02", file: "equipos-climatizacion-02.jpg", alt: "Equipo de climatización de gran formato instalado en la cubierta de un edificio, con varios módulos de filtrado.", caption: "Equipos de climatización", order: 17 },
+    { id: "photo-equipos-climatizacion-02", file: "equipos-climatizacion-02.jpg", alt: "Equipo de climatización de gran formato instalado en la cubierta de un edificio.", caption: "Equipos de climatización", order: 17 },
   ];
 
   for (const p of projectPhotos) {
@@ -277,89 +287,97 @@ async function main() {
     }));
   }
 
-  // ---- Career stages (editorial content, see src/data/careerStages.ts) ----
-  await ensureDocument("careerStage-peon-ayudante", "careerStage", async () => ({
+  // ---- Vacancies ----
+  // Salary bands below were checked against the Convenio Colectivo de Industria,
+  // Tecnología y Servicios del Metal de Zaragoza (two independent secondary sources,
+  // ~2026 tables): reported convenio-minimum annual gross pay across these categories
+  // sits in roughly the €20,200–€22,450 range, well under every band here — so none of
+  // these needed raising. See CONTENT_CHECKLIST.md for the sourcing caveat (no access to
+  // the primary BOPZ text) and re-check yearly, since convenio tables are updated annually.
+  const applicationInstructions = "Para presentarte no hace falta enviar currículum: basta con contarnos tu experiencia y tu disponibilidad.";
+
+  await ensureDocument("vacancy-peon-ayudante", "vacancy", async () => ({
     title: "Peón / Ayudante",
-    subtitle: "Los primeros pasos",
-    order: 1,
-    description: "El punto de partida en el oficio: familiarizarse con las herramientas, los materiales y la forma de trabajar de un equipo de instalación.",
+    slug: { _type: "slug", current: "peon-ayudante" },
+    status: "open",
+    shortDescription: "Primeros pasos",
+    location: "Zaragoza",
+    summary:
+      "El punto de partida en el oficio: te incorporas a un equipo de instalación para familiarizarte con las herramientas, los materiales y la forma de trabajar en obra.",
     responsibilities: [
-      "Introducción al trabajo en obra.",
-      "Familiarización con herramientas y materiales.",
-      "Conocimiento de los procedimientos básicos de seguridad.",
-      "Apoyo a instaladores con más experiencia.",
-      "Preparación de la zona de trabajo y de los componentes.",
-      "Aprendizaje de cómo funciona un equipo de instalación.",
+      "Apoyar a instaladores con más experiencia en el montaje de conductos.",
+      "Preparar la zona de trabajo y los materiales antes de cada tarea.",
+      "Aprender los procedimientos básicos de seguridad en obra.",
     ],
-    competencies: ["Herramientas básicas", "Materiales y componentes de conductos", "Seguridad en el trabajo", "Trabajo en equipo", "Preparación de instalaciones"],
-    quote: "Todo oficio empieza por conocer sus herramientas, sus materiales y su forma de trabajar.",
-    relatedContent: [{ label: "Conoce el oficio con más detalle", href: "/en-detalle" }],
+    essentialRequirements: ["Disposición a aprender y a trabajar en equipo.", "Compromiso con el trabajo diario en obra."],
+    desirableRequirements: ["Experiencia previa en construcción u otro oficio manual."],
+    learningOpportunities: [
+      "Cómo funciona un equipo de instalación de principio a fin.",
+      "Manejo de herramientas y materiales de conductos.",
+      "Procedimientos de seguridad en obra.",
+    ],
+    salaryRange: { min: 20000, max: 23000, period: "año", gross: true },
+    applicationInstructions,
   }));
 
-  await ensureDocument("careerStage-oficial-tercera", "careerStage", async () => ({
+  await ensureDocument("vacancy-oficial-tercera", "vacancy", async () => ({
     title: "Oficial de tercera",
-    subtitle: "Aprender a montar",
-    order: 2,
-    description: "Primeras tareas de montaje bajo supervisión, con el acento puesto en la precisión y en empezar a entender los planos.",
+    slug: { _type: "slug", current: "oficial-tercera" },
+    status: "open",
+    shortDescription: "Montaje supervisado",
+    location: "Zaragoza",
+    summary: "Primeras tareas de montaje bajo supervisión, con el acento puesto en la precisión y en empezar a entender los planos.",
     responsibilities: [
-      "Tareas básicas de instalación bajo supervisión.",
-      "Conocimiento de soportes y sistemas de anclaje.",
-      "Aprendizaje del montaje de conductos.",
-      "Introducción a la lectura de planos técnicos.",
-      "Desarrollo de precisión y destreza práctica.",
+      "Realizar tareas básicas de instalación bajo supervisión.",
+      "Montar soportes y sistemas de anclaje.",
+      "Iniciarte en la lectura de planos técnicos.",
     ],
-    competencies: ["Montaje básico de conductos", "Soportes y anclajes", "Introducción a planos", "Medición y alineación", "Técnicas de instalación"],
-    relatedContent: [{ label: "Descubre cómo se unen los conductos", href: "/en-detalle#uniones-perfiles" }],
+    essentialRequirements: ["Algo de experiencia previa en montaje o construcción.", "Atención al detalle y disposición a seguir indicaciones."],
+    desirableRequirements: ["Conocimientos básicos de lectura de planos."],
+    learningOpportunities: ["Montaje de conductos con precisión.", "Interpretación de planos técnicos.", "Técnicas de instalación en distintos tipos de obra."],
+    salaryRange: { min: 23000, max: 26000, period: "año", gross: true },
+    applicationInstructions,
   }));
 
-  await ensureDocument("careerStage-oficial-segunda", "careerStage", async () => ({
+  await ensureDocument("vacancy-oficial-segunda", "vacancy", async () => ({
     title: "Oficial de segunda",
-    subtitle: "Ganar autonomía",
-    order: 3,
-    description: "Instalaciones habituales con independencia creciente: interpretar planos, montar tramos completos y resolver problemas comunes.",
+    slug: { _type: "slug", current: "oficial-segunda" },
+    status: "open",
+    shortDescription: "Trabajo autónomo",
+    location: "Zaragoza",
+    summary: "Instalaciones habituales con independencia creciente: interpretar planos, montar tramos completos y resolver problemas comunes.",
     responsibilities: [
-      "Instalaciones habituales con independencia creciente.",
-      "Interpretación de planos técnicos.",
-      "Montaje de tramos completos de conducto.",
-      "Comprensión de las secuencias de instalación.",
-      "Resolución de problemas técnicos habituales.",
+      "Realizar instalaciones habituales con independencia creciente.",
+      "Interpretar planos técnicos sin supervisión constante.",
+      "Montar tramos completos de conducto.",
+      "Resolver problemas técnicos habituales en obra.",
     ],
-    competencies: ["Interpretación de planos", "Planificación de la instalación", "Adaptación de conductos", "Medición y posicionamiento", "Resolución práctica de problemas"],
-    relatedContent: [{ label: "Descubre cómo se adapta un conducto a cada edificio", href: "/servicios#conductos-camino-del-aire" }],
+    essentialRequirements: ["Experiencia demostrable en montaje de conductos.", "Capacidad para trabajar con autonomía."],
+    desirableRequirements: ["Experiencia en distintos tipos de edificio (naves, locales, viviendas)."],
+    learningOpportunities: ["Planificación de una instalación completa.", "Resolución práctica de problemas en obra."],
+    salaryRange: { min: 26000, max: 30000, period: "año", gross: true },
+    applicationInstructions,
   }));
 
-  await ensureDocument("careerStage-oficial-primera", "careerStage", async () => ({
+  await ensureDocument("vacancy-oficial-primera", "vacancy", async () => ({
     title: "Oficial de primera",
-    subtitle: "Dominar el oficio",
-    order: 4,
-    description: "Instalaciones técnicamente exigentes: adaptar conductos a espacios complejos, resolver imprevistos y apoyar a compañeros con menos experiencia.",
+    slug: { _type: "slug", current: "oficial-primera" },
+    status: "open",
+    shortDescription: "Resolución técnica",
+    location: "Zaragoza",
+    summary:
+      "Instalaciones técnicamente exigentes: adaptar conductos a espacios complejos, resolver imprevistos y apoyar a compañeros con menos experiencia.",
     responsibilities: [
-      "Instalaciones técnicamente exigentes.",
-      "Adaptación de conductos a espacios complejos.",
-      "Resolución de problemas de instalación.",
-      "Comprensión completa del proceso de instalación.",
-      "Apoyo a compañeros con menos experiencia.",
+      "Realizar instalaciones técnicamente exigentes.",
+      "Adaptar conductos a espacios complejos.",
+      "Resolver imprevistos de instalación.",
+      "Apoyar y orientar a compañeros con menos experiencia.",
     ],
-    competencies: ["Instalaciones complejas", "Interpretación avanzada de planos", "Resolución técnica de problemas", "Calidad de la instalación", "Liderazgo práctico"],
-    relatedContent: [{ label: "Mira ejemplos de instalaciones", href: "/servicios#conductos-interior" }],
-  }));
-
-  await ensureDocument("careerStage-encargado-jefe-equipo", "careerStage", async () => ({
-    title: "Jefe de equipo / Encargado",
-    subtitle: "Coordinar y transmitir experiencia",
-    order: 5,
-    description: "Coordinación del equipo de instalación, organización del trabajo en obra y transmisión del conocimiento técnico a otros compañeros.",
-    responsibilities: [
-      "Coordinación de equipos de instalación.",
-      "Organización de las actividades de trabajo.",
-      "Gestión de materiales y secuencias de instalación.",
-      "Supervisión de calidad y seguridad.",
-      "Coordinación con otros oficios de la obra.",
-      "Transmisión de conocimiento técnico.",
-    ],
-    competencies: ["Coordinación de equipos", "Planificación del trabajo", "Comunicación", "Supervisión de calidad", "Resolución de problemas", "Organización de obra"],
-    note: "Un puesto de encargado o jefe de equipo no implica necesariamente un ascenso contractual automático desde oficial de primera. Lo presentamos como un ejemplo de responsabilidad posible dentro del oficio, sujeto a confirmación por parte de la empresa.",
-    relatedContent: [{ label: "Conoce a quienes dirigen Oltenia", href: "/sobre-oltenia" }],
+    essentialRequirements: ["Experiencia consolidada en instalación de conductos.", "Capacidad para resolver problemas técnicos sin supervisión."],
+    desirableRequirements: ["Experiencia apoyando o coordinando a otros instaladores."],
+    learningOpportunities: ["Instalaciones de alta complejidad técnica.", "Coordinación práctica de tareas en obra."],
+    salaryRange: { min: 30000, max: 35000, period: "año", gross: true },
+    applicationInstructions,
   }));
 
   console.log("\nMigración completada.");
