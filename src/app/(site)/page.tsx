@@ -40,11 +40,11 @@ export default async function HomePage() {
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-navy-200 sm:text-xl">{home.heroSubtext}</p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/trabaja-con-nosotros" className="text-lg sm:px-7">
-                {home.primaryCtaLabel}
-              </ButtonLink>
               <ButtonLink href="/servicios" variant="secondary-dark">
                 {home.secondaryCtaLabel}
+              </ButtonLink>
+              <ButtonLink href="/trabaja-con-nosotros" className="text-lg sm:px-7">
+                {home.primaryCtaLabel}
               </ButtonLink>
             </div>
           </div>

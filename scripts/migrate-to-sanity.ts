@@ -144,8 +144,17 @@ async function main() {
   // and is listed for the owners instead (see CONTENT_CHECKLIST.md).
   await ensureDocument("workingConditions", "workingConditions", async () => ({
     employmentStatement: "Contratación formalizada correctamente, con retribución transparente y pagos puntuales.",
-    vehicleStatement: "La empresa proporciona vehículo para los desplazamientos de trabajo.",
+    scheduleStatement:
+      "La jornada laboral es de 1.752 horas de trabajo efectivo en cómputo anual, según el convenio colectivo aplicable.",
+    collectiveAgreementStatement: "Convenio Colectivo de Industria, Tecnología y Servicios del Metal de Zaragoza.",
+    vacationStatement:
+      "30 días naturales de vacaciones retribuidas al año, el mínimo establecido por el Estatuto de los Trabajadores (art. 38), salvo mejora del convenio aplicable.",
+    weeklyRestStatement: "Descanso semanal mínimo de día y medio ininterrumpido, según el Estatuto de los Trabajadores (art. 37).",
+    siteSafetyStatement:
+      "La empresa cumple con la normativa de prevención de riesgos laborales (Ley 31/1995): formación y equipos de protección adecuados a cada tarea.",
+    vehicleArrangementNote: "El vehículo de empresa es compartido entre el equipo, no asignado de forma individual.",
     travelTimeStatement: "Los desplazamientos de trabajo se cuentan y se pagan como tiempo de trabajo.",
+    trainingStatement: "Cursos de formación autorizados, financiados por la empresa.",
     overtimeStatement:
       "Las horas extra son voluntarias: se registran y se compensan según los términos y límites legales aplicables.",
     companyBaseNote: "La base de Oltenia es el punto de encuentro del equipo antes de salir a cada obra — con su máquina de café de rigor.",
@@ -228,6 +237,17 @@ async function main() {
     photo: { ...(await uploadImage("/images/equipo/mihaela-tanasie.jpg")), alt: "Mihaela Tanasie, cofundadora y directora de administración y finanzas de Oltenia." },
   }));
 
+  await ensureDocument("teamMember-victor", "teamMember", async () => ({
+    name: "Víctor Grumezescu",
+    role: "Oficial de primera · 5 años en Oltenia",
+    order: 3,
+    bio: [
+      "Graduado en Ciencias Sociales por el IES Corona de Aragón, Víctor cuenta con una trayectoria variada que incluye experiencias en restauración y mecánica, además de un notable talento para los bailes populares rumanos.",
+      "Tras cinco años en Oltenia, ha alcanzado la categoría de oficial de primera, asumiendo cada vez mayores responsabilidades en obra. Participa en la organización de los trabajos, coordina tareas cuando es necesario y se preocupa por el bienestar de sus compañeros. Y, sobre todo, por el suyo propio.",
+    ],
+    photo: { ...(await uploadImage("/images/equipo/victor.jpg")), alt: "Víctor, oficial de primera en Oltenia." },
+  }));
+
   // ---- Services -----------------------------------------------------
   await ensureDocument("service-ventilacion", "service", async () => ({
     serviceId: "ventilacion",
@@ -288,12 +308,13 @@ async function main() {
   }
 
   // ---- Vacancies ----
-  // Salary bands below were checked against the Convenio Colectivo de Industria,
-  // Tecnología y Servicios del Metal de Zaragoza (two independent secondary sources,
-  // ~2026 tables): reported convenio-minimum annual gross pay across these categories
-  // sits in roughly the €20,200–€22,450 range, well under every band here — so none of
-  // these needed raising. See CONTENT_CHECKLIST.md for the sourcing caveat (no access to
-  // the primary BOPZ text) and re-check yearly, since convenio tables are updated annually.
+  // Provisional editorial salary bands (owner-directed, Nov 2026 revision — narrower
+  // €20k–€30k spread than the previous draft). NOT verified contractual offers.
+  // Convenio Colectivo de Industria, Tecnología y Servicios del Metal de Zaragoza:
+  // two independent secondary sources reported a convenio-minimum annual gross pay for
+  // Peón of ~€20,198–€21,274 — meaning this band's €20,000 floor may sit at or just
+  // below that minimum. Flagged in CONTENT_CHECKLIST.md for owner/gestoría verification
+  // before these are treated as confirmed offers; raise the floor if confirmed below.
   const applicationInstructions = "Para presentarte no hace falta enviar currículum: basta con contarnos tu experiencia y tu disponibilidad.";
 
   await ensureDocument("vacancy-peon-ayudante", "vacancy", async () => ({
@@ -316,7 +337,7 @@ async function main() {
       "Manejo de herramientas y materiales de conductos.",
       "Procedimientos de seguridad en obra.",
     ],
-    salaryRange: { min: 20000, max: 23000, period: "año", gross: true },
+    salaryRange: { min: 20000, max: 22000, period: "año", gross: true },
     applicationInstructions,
   }));
 
@@ -335,7 +356,7 @@ async function main() {
     essentialRequirements: ["Algo de experiencia previa en montaje o construcción.", "Atención al detalle y disposición a seguir indicaciones."],
     desirableRequirements: ["Conocimientos básicos de lectura de planos."],
     learningOpportunities: ["Montaje de conductos con precisión.", "Interpretación de planos técnicos.", "Técnicas de instalación en distintos tipos de obra."],
-    salaryRange: { min: 23000, max: 26000, period: "año", gross: true },
+    salaryRange: { min: 22000, max: 24000, period: "año", gross: true },
     applicationInstructions,
   }));
 
@@ -355,7 +376,7 @@ async function main() {
     essentialRequirements: ["Experiencia demostrable en montaje de conductos.", "Capacidad para trabajar con autonomía."],
     desirableRequirements: ["Experiencia en distintos tipos de edificio (naves, locales, viviendas)."],
     learningOpportunities: ["Planificación de una instalación completa.", "Resolución práctica de problemas en obra."],
-    salaryRange: { min: 26000, max: 30000, period: "año", gross: true },
+    salaryRange: { min: 24000, max: 27000, period: "año", gross: true },
     applicationInstructions,
   }));
 
@@ -376,7 +397,7 @@ async function main() {
     essentialRequirements: ["Experiencia consolidada en instalación de conductos.", "Capacidad para resolver problemas técnicos sin supervisión."],
     desirableRequirements: ["Experiencia apoyando o coordinando a otros instaladores."],
     learningOpportunities: ["Instalaciones de alta complejidad técnica.", "Coordinación práctica de tareas en obra."],
-    salaryRange: { min: 30000, max: 35000, period: "año", gross: true },
+    salaryRange: { min: 27000, max: 30000, period: "año", gross: true },
     applicationInstructions,
   }));
 

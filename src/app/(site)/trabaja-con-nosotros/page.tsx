@@ -157,21 +157,29 @@ export default async function RecruitmentPage() {
 
       {/* D. CONDICIONES DE TRABAJO */}
       {workingConditions.hasContent ? (
-        <section aria-labelledby="condiciones-titulo" className="bg-white py-16 sm:py-24">
+        <section id="condiciones-de-trabajo" aria-labelledby="condiciones-titulo" className="scroll-mt-16 bg-white py-16 sm:py-24">
           <Container>
             <h2 id="condiciones-titulo" className="text-3xl font-bold sm:text-4xl">
               Condiciones de trabajo
             </h2>
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+              Lo más importante para saber si este trabajo encaja contigo. Cada puesto tiene además su propia página con
+              el detalle completo.
+            </p>
             <dl className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
               {workingConditions.employmentStatement ? <Fact label="Contratación y retribución">{workingConditions.employmentStatement}</Fact> : null}
+              {workingConditions.collectiveAgreementStatement ? <Fact label="Convenio colectivo aplicable">{workingConditions.collectiveAgreementStatement}</Fact> : null}
               {workingConditions.scheduleStatement ? <Fact label="Horario">{workingConditions.scheduleStatement}</Fact> : null}
-              {workingConditions.vehicleStatement ? <Fact label="Vehículo de empresa">{workingConditions.vehicleStatement}</Fact> : null}
-              {workingConditions.vehicleArrangementNote ? <Fact label="Vehículo: uso">{workingConditions.vehicleArrangementNote}</Fact> : null}
+              {workingConditions.vacationStatement ? <Fact label="Vacaciones">{workingConditions.vacationStatement}</Fact> : null}
+              {workingConditions.holidaysStatement ? <Fact label="Festivos">{workingConditions.holidaysStatement}</Fact> : null}
+              {workingConditions.weeklyRestStatement ? <Fact label="Descanso semanal">{workingConditions.weeklyRestStatement}</Fact> : null}
+              {workingConditions.vehicleArrangementNote ? <Fact label="Vehículo">{workingConditions.vehicleArrangementNote}</Fact> : null}
               {workingConditions.travelTimeStatement ? <Fact label="Desplazamientos como tiempo de trabajo">{workingConditions.travelTimeStatement}</Fact> : null}
               {workingConditions.travelJourneysNote ? <Fact label="Trayectos que se cuentan">{workingConditions.travelJourneysNote}</Fact> : null}
               {workingConditions.travelDestinationsNote ? <Fact label="Destinos y frecuencia">{workingConditions.travelDestinationsNote}</Fact> : null}
               {workingConditions.overnightStaysNote ? <Fact label="Pernoctas">{workingConditions.overnightStaysNote}</Fact> : null}
               {workingConditions.expensesCoveredNote ? <Fact label="Gastos cubiertos">{workingConditions.expensesCoveredNote}</Fact> : null}
+              {workingConditions.siteSafetyStatement ? <Fact label="Seguridad en obra">{workingConditions.siteSafetyStatement}</Fact> : null}
               {workingConditions.trainingStatement ? <Fact label="Formación y aprendizaje">{workingConditions.trainingStatement}</Fact> : null}
               {workingConditions.overtimeStatement ? <Fact label="Horas extra">{workingConditions.overtimeStatement}</Fact> : null}
             </dl>

@@ -83,6 +83,21 @@ export function formatSalary(salary: NonNullable<Vacancy["salaryRange"]>): strin
   return `${range} ${salary.gross ? "brutos" : "netos"} / ${salary.period}`;
 }
 
+const salaryPeriodAdjective: Record<NonNullable<Vacancy["salaryRange"]>["period"], string> = {
+  hora: "por hora",
+  mes: "mensual",
+  año: "anual",
+};
+
+/** Matches the required public phrasing: "Salario bruto anual orientativo: 24.000–27.000 €". */
+export function formatSalaryOrientativo(salary: NonNullable<Vacancy["salaryRange"]>): string {
+  const fmt = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 });
+  const grossWord = salary.gross ? "bruto" : "neto";
+  const periodWord = salaryPeriodAdjective[salary.period];
+  const range = salary.min === salary.max ? `${fmt.format(salary.min)} €` : `${fmt.format(salary.min)}–${fmt.format(salary.max)} €`;
+  return `Salario ${grossWord} ${periodWord} orientativo: ${range}`;
+}
+
 export function areasOfWork(company: CompanyContent): string {
   const names = company.services.map((s) => s.name.toLowerCase());
   if (names.length <= 1) return names.join("");

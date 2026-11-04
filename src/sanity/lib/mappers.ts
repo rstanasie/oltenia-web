@@ -133,6 +133,11 @@ export type RawSiteQueryResult = {
   workingConditions: {
     employmentStatement?: string | null;
     scheduleStatement?: string | null;
+    collectiveAgreementStatement?: string | null;
+    vacationStatement?: string | null;
+    holidaysStatement?: string | null;
+    weeklyRestStatement?: string | null;
+    siteSafetyStatement?: string | null;
     vehicleStatement?: string | null;
     vehicleArrangementNote?: string | null;
     travelTimeStatement?: string | null;
@@ -353,6 +358,11 @@ export function toRecruitmentPage(raw: RawSiteQueryResult["recruitmentPage"]): R
 export type WorkingConditionsContent = {
   employmentStatement: string | null;
   scheduleStatement: string | null;
+  collectiveAgreementStatement: string | null;
+  vacationStatement: string | null;
+  holidaysStatement: string | null;
+  weeklyRestStatement: string | null;
+  siteSafetyStatement: string | null;
   vehicleStatement: string | null;
   vehicleArrangementNote: string | null;
   travelTimeStatement: string | null;
@@ -372,6 +382,11 @@ export function toWorkingConditions(raw: RawSiteQueryResult["workingConditions"]
   const result = {
     employmentStatement: field(raw?.employmentStatement),
     scheduleStatement: field(raw?.scheduleStatement),
+    collectiveAgreementStatement: field(raw?.collectiveAgreementStatement),
+    vacationStatement: field(raw?.vacationStatement),
+    holidaysStatement: field(raw?.holidaysStatement),
+    weeklyRestStatement: field(raw?.weeklyRestStatement),
+    siteSafetyStatement: field(raw?.siteSafetyStatement),
     vehicleStatement: field(raw?.vehicleStatement),
     vehicleArrangementNote: field(raw?.vehicleArrangementNote),
     travelTimeStatement: field(raw?.travelTimeStatement),

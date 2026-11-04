@@ -17,44 +17,43 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata(
     {
       title: "Contacto",
-      description: `Datos de contacto de ${company.brand.name}, empresa de ventilación, climatización y aire acondicionado en ${company.location.city}.`,
+      description: `Cómo presentarte a un puesto en ${company.brand.name} o contactar por una consulta sobre ventilación, climatización y aire acondicionado en ${company.location.city}.`,
       path: "/contacto",
     },
     { company, indexable, seo: seo.contacto },
   );
 }
 
-const linkClass = "inline-flex min-h-11 items-center font-semibold text-accent underline-offset-4 hover:underline break-all";
+const linkClass = "inline-flex min-h-11 items-center font-semibold underline-offset-4 hover:underline break-all";
 
 export default async function ContactPage() {
   const company = await getCompany();
-  const channels = customerChannels(company);
   const recruitment = recruitmentChannels(company);
+  const customer = customerChannels(company);
   const address = publicAddress(company);
   const { openingHours } = company.customerContact;
   const { serviceArea } = company.serviceDetails;
-  const separateRecruitment = !company.recruitmentContact.sameAsCustomer && hasAnyChannel(recruitment);
-  const hasDetails = hasAnyChannel(channels) || address || openingHours.length > 0 || serviceArea;
+  const hasCustomerDetails = hasAnyChannel(customer) || address || openingHours.length > 0 || serviceArea;
 
-  const rows: { label: string; value: ReactNode }[] = [
-    ...(channels.phone ? [{
+  const customerRows: { label: string; value: ReactNode }[] = [
+    ...(customer.phone ? [{
       label: "Teléfono",
-      value: <a className={linkClass} href={telHref(channels.phone)}>{formatPhone(channels.phone)}</a>,
+      value: <a className={`${linkClass} text-accent`} href={telHref(customer.phone)}>{formatPhone(customer.phone)}</a>,
     }] : []),
-    ...(channels.whatsapp ? [{
+    ...(customer.whatsapp ? [{
       label: "WhatsApp",
       value: (
-        <a className={linkClass} href={whatsappHref(channels.whatsapp)} target="_blank" rel="noopener noreferrer">
-          {formatPhone(channels.whatsapp)}
+        <a className={`${linkClass} text-accent`} href={whatsappHref(customer.whatsapp)} target="_blank" rel="noopener noreferrer">
+          {formatPhone(customer.whatsapp)}
           <span className="sr-only"> (se abre en una ventana nueva)</span>
         </a>
       ),
     }] : []),
-    ...(channels.email ? [{
+    ...(customer.email ? [{
       label: "Correo electrónico",
       value: (
-        <a className={linkClass} href={mailtoHref(channels.email, `Consulta desde la web de ${company.brand.name}`)}>
-          {channels.email}
+        <a className={`${linkClass} text-accent`} href={mailtoHref(customer.email, `Consulta desde la web de ${company.brand.name}`)}>
+          {customer.email}
         </a>
       ),
     }] : []),
@@ -63,7 +62,7 @@ export default async function ContactPage() {
       value: (
         <>
           <address className="not-italic">{formatAddress(address)}</address>
-          <a className={linkClass} href={mapHref(address, company.customerContact.mapUrl)} target="_blank" rel="noopener noreferrer">
+          <a className={`${linkClass} text-accent`} href={mapHref(address, company.customerContact.mapUrl)} target="_blank" rel="noopener noreferrer">
             Ver en el mapa<span className="sr-only"> (se abre en una ventana nueva)</span>
           </a>
         </>
@@ -87,65 +86,75 @@ export default async function ContactPage() {
   return (
     <>
       <PageHeader eyebrow={`${company.location.city}, ${company.location.country}`} title="Contacto">
-        <p>Consultas sobre ventilación, climatización y aire acondicionado.</p>
+        <p>¿Buscas trabajo con nosotros o tienes una consulta sobre nuestros servicios? Aquí tienes cómo escribirnos.</p>
       </PageHeader>
 
       <Container className="grid gap-12 py-16 sm:py-20 lg:grid-cols-[1.3fr_1fr]">
-        <section aria-labelledby="datos-titulo">
-          <h2 id="datos-titulo" className="text-2xl font-bold sm:text-3xl">
-            Datos de contacto
+        <section aria-labelledby="empleo-titulo" className="rounded-xl border-2 border-accent bg-white p-8">
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-accent">Candidaturas</p>
+          <h2 id="empleo-titulo" className="mt-2 text-2xl font-bold sm:text-3xl">
+            ¿Quieres trabajar con nosotros?
           </h2>
-          {hasDetails ? (
+          <p className="mt-4 max-w-prose leading-relaxed text-muted">
+            Si buscas trabajo en el sector de la climatización y ventilación, o te gustaría aprender el oficio, ponte en
+            contacto con nosotros. Cuéntanos tu experiencia y qué tipo de trabajo estás buscando.
+          </p>
+
+          <div className="mt-6">
+            <ContactActions
+              channels={recruitment}
+              whatsappMessage={company.recruitment.whatsappMessage}
+              emailSubject={company.recruitment.emailSubject}
+              emailBody={company.recruitment.emailBody}
+              emptyMessage="Todavía no hemos publicado un canal de contacto para candidaturas."
+            />
+          </div>
+
+          {recruitment.email ? (
+            <p className="mt-4 text-sm text-muted">
+              O copia nuestro correo y escríbenos desde tu propio cliente de correo:{" "}
+              <span className="select-all font-mono font-semibold text-navy-900">{recruitment.email}</span>
+            </p>
+          ) : null}
+
+          <Link href="/trabaja-con-nosotros#puestos" className="mt-6 inline-flex min-h-11 items-center font-semibold text-accent underline-offset-4 hover:underline">
+            Ver puestos abiertos<span aria-hidden="true" className="ml-1">→</span>
+          </Link>
+        </section>
+
+        <aside aria-labelledby="comercial-titulo" className="h-fit rounded-xl border border-line bg-paper p-8">
+          <h2 id="comercial-titulo" className="text-xl font-bold text-navy-900">
+            Consultas comerciales
+          </h2>
+          <p className="mt-3 leading-relaxed text-muted">
+            Si tienes una consulta sobre nuestros servicios de ventilación, climatización o aire acondicionado, escríbenos.
+          </p>
+          {hasCustomerDetails ? (
             <>
               <div className="mt-6">
                 <ContactActions
-                  channels={channels}
+                  channels={customer}
                   emailSubject={`Consulta desde la web de ${company.brand.name}`}
-                  emptyMessage="No hay canales directos de contacto publicados."
+                  emptyMessage=""
                 />
               </div>
-              <dl className="mt-8 divide-y divide-line rounded-lg border border-line bg-white">
-                {rows.map((row) => (
-                  <div key={row.label} className="grid gap-1 px-5 py-3 sm:grid-cols-[11rem_1fr] sm:items-center sm:gap-4">
-                    <dt className="font-semibold text-muted">{row.label}</dt>
-                    <dd className="text-navy-900">{row.value}</dd>
-                  </div>
-                ))}
-              </dl>
+              {customerRows.length > 0 ? (
+                <dl className="mt-6 grid gap-3 text-sm">
+                  {customerRows.map((row) => (
+                    <div key={row.label}>
+                      <dt className="font-semibold text-navy-900">{row.label}</dt>
+                      <dd className="mt-0.5 text-muted">{row.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : null}
             </>
           ) : (
-            <div className="mt-6 rounded-lg border border-line bg-white p-6">
-              <p className="text-lg font-semibold text-navy-900">Datos de contacto no disponibles todavía.</p>
-              <p className="mt-2 leading-relaxed text-muted">
-                Estamos preparando esta información. {company.brand.name} está en {company.location.city},{" "}
-                {company.location.country}.
-              </p>
-            </div>
+            <p className="mt-6 text-sm text-muted">
+              Todavía no hemos publicado un canal de contacto comercial. {company.brand.name} está en{" "}
+              {company.location.city}, {company.location.country}.
+            </p>
           )}
-        </section>
-
-        <aside aria-labelledby="empleo-titulo" className="h-fit rounded-xl bg-navy-900 p-8 text-white on-dark">
-          <h2 id="empleo-titulo" className="text-2xl font-bold text-white">
-            ¿Buscas trabajo?
-          </h2>
-          <p className="mt-3 leading-relaxed text-navy-200">
-            Si te interesa trabajar en {company.brand.name}, consulta cómo presentarte.
-          </p>
-          {separateRecruitment ? (
-            <div className="mt-6">
-              <ContactActions
-                channels={recruitment}
-                tone="dark"
-                whatsappMessage={company.recruitment.whatsappMessage}
-                emailSubject={company.recruitment.emailSubject}
-                emailBody={company.recruitment.emailBody}
-                emptyMessage=""
-              />
-            </div>
-          ) : null}
-          <Link href="/trabaja-con-nosotros" className="mt-6 inline-flex min-h-11 items-center font-semibold text-accent-soft underline-offset-4 hover:underline">
-            Trabaja con nosotros<span aria-hidden="true" className="ml-1">→</span>
-          </Link>
         </aside>
       </Container>
     </>

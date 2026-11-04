@@ -78,6 +78,7 @@ export const SITE_QUERY = defineQuery(`{
   },
   "workingConditions": *[_type == "workingConditions"][0]{
     employmentStatement, scheduleStatement,
+    collectiveAgreementStatement, vacationStatement, holidaysStatement, weeklyRestStatement, siteSafetyStatement,
     vehicleStatement, vehicleArrangementNote,
     travelTimeStatement, travelJourneysNote, travelDestinationsNote, overnightStaysNote, expensesCoveredNote,
     trainingStatement, overtimeStatement, companyBaseNote

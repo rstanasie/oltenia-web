@@ -33,19 +33,27 @@ Conocido hoy: nombre comercial **Oltenia**, ubicación **Zaragoza, España**, á
 
 ## Puestos — Studio → «Puestos»
 Ya existen 4 puestos (Peón/Ayudante, Oficial de tercera, Oficial de segunda, Oficial de primera)
-con funciones, requisitos imprescindibles/valorables y qué se puede aprender.
-- [x] **Salario**: publicado — Peón/Ayudante 20.000–23.000 €; Oficial de tercera 23.000–26.000 €;
-      Oficial de segunda 26.000–30.000 €; Oficial de primera 30.000–35.000 € (brutos/año).
-      Comprobado frente al Convenio Colectivo de Industria, Tecnología y Servicios del Metal de
-      Zaragoza: dos fuentes secundarias independientes sitúan el salario mínimo de convenio para
-      estas categorías en ~20.200–22.450 €/año, muy por debajo de estas bandas, así que ninguna
-      necesitó subirse. **Dato pendiente de verificación definitiva**: no se pudo acceder al texto
-      oficial del BOPZ ni a la tabla de FEMZ (solo socios) para confirmar la cifra exacta —
-      recomendado que la gestoría/asesoría laboral lo confirme contra la tabla salarial vigente
-      antes de usarla en una nómina real. Ambas fuentes sí coinciden en que la jornada de convenio
-      es de 1.752 horas efectivas/año (ver «Condiciones de trabajo» más abajo).
+con funciones, requisitos imprescindibles/valorables y qué se puede aprender. Cada página de
+puesto (`/puestos/[slug]`) ahora muestra las secciones A–J: descripción, responsabilidades,
+requisitos, salario, horario, vacaciones/festivos, desplazamientos, contrato, aprendizaje y botón
+de candidatura — las secciones E–H reutilizan el contenido de «Condiciones de trabajo» (mismo
+origen para todos los puestos, nada duplicado a mano).
+- [x] **Salario** (revisado 2026-11-04, banda más estrecha a petición de la empresa): Peón/Ayudante
+      20.000–22.000 €; Oficial de tercera 22.000–24.000 €; Oficial de segunda 24.000–27.000 €;
+      Oficial de primera 27.000–30.000 € (brutos/año), mostrado como «Salario bruto anual
+      orientativo: X–Y €» en cada página de puesto. **Son bandas editoriales provisionales, no
+      ofertas contractuales confirmadas.**
+      ⚠️ **Discrepancia a revisar**: dos fuentes secundarias (no el texto oficial del BOPZ)
+      situaban el salario mínimo de convenio para Peón en ~20.198–21.274 €/año — el suelo de
+      20.000 € de esta banda podría quedar ligeramente por debajo de ese mínimo. Antes de tratar
+      esta banda como oferta real, pedir a la gestoría/asesoría laboral que confirme la tabla
+      salarial vigente del Convenio Colectivo de Industria, Tecnología y Servicios del Metal de
+      Zaragoza y suba el suelo de Peón si hace falta.
 - [ ] Carné de conducir (si aplica a algún puesto)
-- [ ] Tipo de contrato por puesto
+- [ ] Tipo de contrato por puesto (de momento cada página muestra solo el convenio aplicable, sin
+      comprometerse a un tipo de contrato concreto, hasta que se confirme)
+- [ ] Horario específico de cada puesto, si difiere del horario general (`vacancy.schedule`)
+- [ ] Desplazamientos específicos de cada puesto, si difieren del general (`vacancy.travelExpectations`)
 - [ ] Fecha de publicación y fecha de cierre, si se quiere dar fecha límite
 
 ## Presentación de la empresa — Studio → «Presentación de la empresa»
@@ -73,24 +81,33 @@ con funciones, requisitos imprescindibles/valorables y qué se puede aprender.
 - [ ] Texto alternativo descriptivo para cada una
 
 ## Condiciones de trabajo — Studio → «Condiciones de trabajo»
-Esta sección solo aparece en «Trabaja con nosotros» si al menos un campo tiene contenido; cada
-campo vacío se oculta, nunca se publica un «pendiente de confirmar». Ya confirmado y publicado:
-contratación formalizada y retribución transparente, vehículo de empresa para desplazamientos
-(compartido entre el equipo, no asignado individualmente), desplazamientos contados como tiempo
-de trabajo, horas extra voluntarias y compensadas, y la nota sobre la base como punto de encuentro
-del equipo.
-- [x] **Horario**: publicado como «1.752 horas de trabajo efectivo en cómputo anual, según el
-      convenio colectivo aplicable» — cifra del Convenio Colectivo de Industria, Tecnología y
-      Servicios del Metal de Zaragoza (confirmada en 3 fuentes secundarias independientes). No se
-      publicó «40 horas/semana»: el convenio fija un cómputo ANUAL, no una cifra semanal fija —
-      1.752 h/año equivale a una media de ~33,7 h/semana, pero la distribución real semanal puede
-      variar (jornada intensiva en verano, puentes, etc.). Si la empresa reparte efectivamente
-      40h/semana en temporada alta, se puede añadir como matiz, pero no como cifra única.
-- [x] **Vehículo**: publicado como compartido entre el equipo.
+Esta sección solo aparece en «Trabaja con nosotros» (ancla `#condiciones-de-trabajo`, enlazada
+también desde cada página de puesto) si al menos un campo tiene contenido; cada campo vacío se
+oculta, nunca se publica un «pendiente de confirmar» — lo que falta se lista aquí en su lugar.
+
+**Categoría 1 — hechos legales ya verificados (Estatuto de los Trabajadores / Ley 31/1995),
+válidos para cualquier empresa en España salvo mejora del convenio**: 30 días naturales de
+vacaciones anuales (art. 38 ET), descanso semanal mínimo de día y medio (art. 37 ET), prevención
+de riesgos laborales obligatoria (Ley 31/1995). Publicados como suelo legal, no como política
+específica de Oltenia.
+
+**Categoría 2 — confirmado por la empresa y publicado**: contratación formalizada y retribución
+transparente, convenio aplicable (Convenio Colectivo de Industria, Tecnología y Servicios del
+Metal de Zaragoza), jornada de 1.752 horas efectivas/año según ese convenio, vehículo de empresa
+compartido entre el equipo (no asignado individualmente), desplazamientos contados como tiempo de
+trabajo, horas extra voluntarias y compensadas, y la nota sobre la base como punto de encuentro.
+No se publicó «40 horas/semana»: el convenio fija un cómputo ANUAL (1.752 h/año ≈ 33,7 h/semana de
+media), no una cifra semanal fija; si la empresa reparte efectivamente 40h/semana en temporada
+alta, se puede añadir como matiz.
+
+**Categoría 3 — pendiente de confirmar con la empresa** (no inventado, por eso sigue oculto):
+- [ ] **Días festivos exactos de este año** — el campo publicado remite al calendario laboral
+      vigente en Zaragoza sin dar un número fijo, porque varía cada año (`holidaysStatement`)
 - [ ] **Desplazamientos**: ¿qué trayectos concretos cuentan como tiempo de trabajo? (`travelJourneysNote`)
 - [ ] **Destinos y frecuencia**: destinos habituales, frecuencia de desplazamiento y si hay pernoctas (`travelDestinationsNote`, `overnightStaysNote`)
 - [ ] **Gastos cubiertos** en los desplazamientos: dietas, alojamiento, etc. (`expensesCoveredNote`)
 - [ ] **Formación**: ¿qué cursos o aprendizaje práctico se ofrece realmente? (`trainingStatement`)
+- [ ] **Tipo de contrato** ofrecido realmente (indefinido, temporal, fijo-discontinuo…) por puesto
 
 ## Puestos abiertos: ideas de desarrollo futuro (no construir todavía)
 - [ ] Valorar con el equipo (antes de programar nada) una checklist privada de habilidades,

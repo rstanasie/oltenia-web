@@ -8,6 +8,7 @@ export const workingConditions = defineType({
     "Condiciones generales mostradas en «Trabaja con nosotros», después de «Mucho más que instalar conductos». Comunica el cumplimiento legal con hechos concretos, no como eslogan. Cada campo se oculta si está vacío — no escribas «pendiente de confirmar» en ningún campo: déjalo vacío y coméntalo aparte con quien gestiona el sitio.",
   groups: [
     { name: "employment", title: "Contratación y horario", default: true },
+    { name: "legal", title: "Vacaciones, festivos y convenio" },
     { name: "travel", title: "Vehículo y desplazamientos" },
     { name: "other", title: "Formación, horas extra y base" },
   ],
@@ -27,6 +28,46 @@ export const workingConditions = defineType({
       rows: 2,
       group: "employment",
       description: "Deja vacío hasta confirmar el horario exacto (p. ej. horas semanales) frente al calendario anual aplicable.",
+    }),
+
+    defineField({
+      name: "collectiveAgreementStatement",
+      title: "Convenio colectivo aplicable",
+      type: "text",
+      rows: 2,
+      group: "legal",
+      description: "Nombre del convenio que se aplica realmente a la empresa. No lo dejes genérico si se conoce el nombre exacto.",
+    }),
+    defineField({
+      name: "vacationStatement",
+      title: "Vacaciones",
+      type: "text",
+      rows: 2,
+      group: "legal",
+      description: "Mínimo legal (Estatuto de los Trabajadores) salvo que el convenio aplicable mejore esa cifra.",
+    }),
+    defineField({
+      name: "holidaysStatement",
+      title: "Festivos",
+      type: "text",
+      rows: 2,
+      group: "legal",
+      description: "Días festivos según el calendario laboral vigente; el número exacto varía cada año.",
+    }),
+    defineField({
+      name: "weeklyRestStatement",
+      title: "Descanso semanal",
+      type: "text",
+      rows: 2,
+      group: "legal",
+    }),
+    defineField({
+      name: "siteSafetyStatement",
+      title: "Seguridad en obra",
+      type: "text",
+      rows: 2,
+      group: "legal",
+      description: "Compromiso general de prevención de riesgos laborales. Deja vacío cualquier detalle de equipos o procedimientos concretos que no esté confirmado.",
     }),
 
     defineField({
