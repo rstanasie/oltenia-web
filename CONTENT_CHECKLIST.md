@@ -7,6 +7,27 @@ confirmado por la empresa (y, donde se indica, revisado por un profesional). Eje
 Conocido hoy: nombre comercial **Oltenia**, ubicación **Zaragoza, España**, áreas de trabajo
 **ventilación, climatización y aire acondicionado**. Nada más se ha publicado.
 
+## ⚠️ Acción pendiente antes de desplegar: candidaturas con currículum
+El formulario de candidatura ahora está embebido directamente en cada página de puesto
+(`/puestos/[slug]`, justo después de la descripción — ya no hay una página `/solicitar` aparte).
+El envío crea una «Candidatura» en Studio → **Candidaturas recibidas**, con el CV descargable,
+nombre/apellidos, contacto, el puesto asociado automáticamente y si aceptó la política de
+privacidad. Para que esto funcione en producción:
+- [ ] **Configurar `SANITY_API_WRITE_TOKEN` en Vercel → Settings → Environment Variables
+      (Production)**. Antes se mantenía fuera de Vercel a propósito (solo se usaba para migrar
+      contenido desde tu máquina); ahora la ruta `/api/candidaturas` lo necesita en tiempo real
+      para guardar cada candidatura. Sin esto, el formulario no funcionará en el sitio publicado
+      aunque sí funcione en local.
+- [ ] Considera crear un token de Sanity dedicado a esta ruta (no el mismo que usas para migrar
+      contenido localmente), para poder revocarlo sin afectar tus scripts.
+- [ ] Revisar periódicamente Studio → «Candidaturas recibidas» para no perder solicitudes.
+- [ ] **Política de privacidad (`/privacidad`) todavía es un borrador sin revisar** (datos legales
+      pendientes — ver sección más abajo). El formulario de candidatura ahora pide aceptarla antes
+      de enviar un CV, pero el texto real no describe todavía que se recoge y almacena el CV, el
+      nombre y el contacto del candidato en Sanity. Hay que completar y revisar esta página antes
+      de que el formulario esté realmente conforme (no solo con la casilla, sino con el texto que
+      el candidato está aceptando).
+
 ## Datos legales de la empresa — Studio → «Datos legales»
 - [ ] Razón social
 - [ ] NIF/CIF
@@ -19,16 +40,18 @@ Conocido hoy: nombre comercial **Oltenia**, ubicación **Zaragoza, España**, á
 - [ ] Colores corporativos, si existen (la paleta actual es provisional)
 
 ## Contacto para candidaturas — Studio → «Contacto» (pestaña «Candidaturas»)
-- [x] Canal: correo electrónico (`rstanasie@gmail.com`) — formulario de candidaturas ya activo
-- [ ] ¿Es el canal definitivo, o un correo temporal? ¿Añadir también WhatsApp o teléfono?
+- [x] Canal: correo electrónico (`olteniaconducciones@yahoo.es`) — formulario de candidaturas ya activo
+- [ ] ¿Añadir también WhatsApp o teléfono específicos para candidaturas (aparte del general)?
 - [ ] Persona que atenderá los mensajes
 - [ ] Revisar el asunto/cuerpo prellenado del correo (`recruitmentEmailSubject`/`recruitmentEmailBody`)
 
 ## Contacto para clientes — Studio → «Contacto» (pestaña «Clientes»)
-- [ ] Teléfono
-- [ ] WhatsApp
-- [ ] Correo electrónico
-- [ ] Dirección pública (solo si se quiere publicar)
+- [x] Teléfono: +34 625 352 933 (también usado como WhatsApp) — publicado en la tarjeta «Contacta
+      directamente con nosotros» de «Trabaja con nosotros» y en «Contacto»
+- [x] WhatsApp: mismo número
+- [ ] Correo electrónico (el único correo configurado hoy es el de candidaturas,
+      olteniaconducciones@yahoo.es; si se quiere uno distinto para consultas comerciales, indicarlo)
+- [x] Dirección pública: C/ Antonio Sangenis, 62, 50010 Zaragoza
 - [ ] Horario de atención
 
 ## Puestos — Studio → «Puestos»

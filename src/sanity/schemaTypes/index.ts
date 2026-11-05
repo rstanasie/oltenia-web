@@ -8,6 +8,7 @@ import { companyInfo } from "./documents/companyInfo";
 import { contactInfo } from "./documents/contactInfo";
 import { enDetallePage } from "./documents/enDetallePage";
 import { homePage } from "./documents/homePage";
+import { jobApplication } from "./documents/jobApplication";
 import { legalInfo } from "./documents/legalInfo";
 import { photo } from "./documents/photo";
 import { recruitmentPage } from "./documents/recruitmentPage";
@@ -55,4 +56,5 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   service,
   vacancy,
   photo,
+  jobApplication,
 ];

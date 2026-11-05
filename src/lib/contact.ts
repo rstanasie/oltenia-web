@@ -62,7 +62,18 @@ export function mailtoHref(email: string, subject?: string, body?: string): stri
 }
 
 export function formatAddress(address: PostalAddress): string {
-  return `${address.street}, ${address.postalCode} ${address.locality}, ${address.province}, ${address.country}`;
+  const { street, postalCode, locality, province, country } = address;
+  const sameAsLocality = province.trim().toLowerCase() === locality.trim().toLowerCase();
+  const provincePart = province && !sameAsLocality ? `, ${province}` : "";
+  return `${street}, ${postalCode} ${locality}${provincePart}, ${country}`;
+}
+
+/** Same address, broken into display lines: street / postal code + locality (+ province if different) / country. */
+export function addressLines(address: PostalAddress): string[] {
+  const { street, postalCode, locality, province, country } = address;
+  const sameAsLocality = province.trim().toLowerCase() === locality.trim().toLowerCase();
+  const line2 = sameAsLocality ? `${postalCode} ${locality}` : `${postalCode} ${locality}, ${province}`;
+  return [street, line2, country];
 }
 
 export function mapHref(address: PostalAddress, explicitUrl: string | null): string {

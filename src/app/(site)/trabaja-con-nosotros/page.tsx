@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Suspense } from "react";
 import type { ReactNode } from "react";
 import { ApplicationForm } from "@/components/ApplicationForm";
 import { ButtonLink } from "@/components/Button";
 import { Container } from "@/components/Container";
+import { DirectContactCard } from "@/components/DirectContactCard";
 import { LightboxProvider } from "@/components/Lightbox";
 import { NarrativePhoto } from "@/components/NarrativePhoto";
 import { VacancyCards } from "@/components/VacancyCards";
 import { getCompany } from "@/content/company";
 import { getRecruitmentPage, getSeoSettings, getWorkingConditions } from "@/content/pages";
-import { findPhoto, openVacancies, recruitmentChannels } from "@/lib/content";
+import { findPhoto, openVacancies, publicAddress, recruitmentChannels } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
 import { envSite, isIndexable } from "@/lib/site";
 
@@ -48,6 +48,7 @@ export default async function RecruitmentPage() {
   const [company, hero, workingConditions] = await Promise.all([getCompany(), getRecruitmentPage(), getWorkingConditions()]);
   const vacancies = openVacancies(company);
   const channels = recruitmentChannels(company);
+  const address = publicAddress(company);
   const projects = company.photos.projects;
   const pick = (filename: string) => findPhoto(projects, filename);
 
@@ -97,20 +98,22 @@ export default async function RecruitmentPage() {
           </div>
 
           {/* B. NO SABES QUÉ PUESTO */}
-          <div id="aplicar" className="mt-14 scroll-mt-16 rounded-xl border-l-8 border-accent bg-paper p-8 sm:mt-16">
-            <h3 className="text-2xl font-bold">¿No sabes qué puesto encaja contigo? Cuéntanos tu experiencia</h3>
-            <p className="mt-3 max-w-2xl leading-relaxed text-muted">
-              Si estás empezando o vienes de un oficio relacionado de la construcción, también puedes escribirnos.
-              Valoramos la curiosidad, la disposición a aprender y el compromiso en el día a día.
+          <div id="aplicar" className="mt-10 scroll-mt-16 sm:mt-12">
+            <h3 className="text-lg font-bold">¿No sabes qué puesto encaja contigo?</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Cuéntanos tu experiencia y te decimos si encajas en algún equipo.
             </p>
-            <div className="mt-8 max-w-xl">
-              <Suspense fallback={null}>
-                <ApplicationForm
-                  channels={channels}
-                  areas={company.services.map((service) => service.name)}
-                  brandName={company.brand.name}
-                />
-              </Suspense>
+            <div className="mt-5 grid gap-6 lg:grid-cols-2">
+              <div className="rounded-lg border-l-4 border-accent bg-paper p-6">
+                <ApplicationForm channels={channels} brandName={company.brand.name} />
+              </div>
+              <DirectContactCard
+                phone={company.customerContact.phone}
+                whatsapp={company.customerContact.whatsapp}
+                email={channels.email}
+                address={address}
+                mapUrl={company.customerContact.mapUrl}
+              />
             </div>
           </div>
         </Container>

@@ -37,4 +37,12 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem("service").title("Servicios"),
       S.documentTypeListItem("vacancy").title("Puestos"),
       S.documentTypeListItem("photo").title("Fotos"),
+      S.divider(),
+      S.documentTypeListItem("jobApplication")
+        .title("Candidaturas recibidas")
+        .child(
+          S.documentTypeList("jobApplication")
+            .title("Candidaturas recibidas")
+            .defaultOrdering([{ field: "submittedAt", direction: "desc" }]),
+        ),
     ]);

@@ -92,11 +92,21 @@ async function main() {
   }));
 
   await ensureDocument("contactInfo", "contactInfo", async () => ({
-    customerPhone: null,
-    customerWhatsapp: null,
+    customerPhone: "+34625352933",
+    customerWhatsapp: "+34625352933",
     customerEmail: null,
+    customerAddress: {
+      _type: "postalAddress",
+      street: "C/ Antonio Sangenis, 62",
+      postalCode: "50010",
+      locality: "Zaragoza",
+      province: "Zaragoza",
+      country: "España",
+    },
     openingHours: [],
-    recruitmentSameAsCustomer: true,
+    recruitmentSameAsCustomer: false,
+    recruitmentPhone: "+34642871023",
+    recruitmentEmail: "olteniaconducciones@yahoo.es",
     recruitmentWhatsappMessage:
       "Hola, me interesa trabajar en Oltenia. Me gustaría consultar si tenéis oportunidades disponibles. Mi experiencia es…",
     recruitmentEmailSubject: "Quiero trabajar en Oltenia",
@@ -315,7 +325,7 @@ async function main() {
   // Peón of ~€20,198–€21,274 — meaning this band's €20,000 floor may sit at or just
   // below that minimum. Flagged in CONTENT_CHECKLIST.md for owner/gestoría verification
   // before these are treated as confirmed offers; raise the floor if confirmed below.
-  const applicationInstructions = "Para presentarte no hace falta enviar currículum: basta con contarnos tu experiencia y tu disponibilidad.";
+  const applicationInstructions = "Adjunta tu currículum en el siguiente formulario; no hace falta nada más para presentarte.";
 
   await ensureDocument("vacancy-peon-ayudante", "vacancy", async () => ({
     title: "Peón / Ayudante",

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ButtonLink } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHeader } from "@/components/PageHeader";
+import { SolicitudForm } from "@/components/SolicitudForm";
 import { getCompany } from "@/content/company";
 import { getVacancyBySlug, getVacancySlugs, getWorkingConditions } from "@/content/pages";
 import { contractLabels, formatSalaryOrientativo } from "@/lib/content";
@@ -34,21 +34,10 @@ export async function generateMetadata({ params }: PageProps<"/puestos/[slug]">)
   );
 }
 
-function Section({ letter, title, children }: { letter: string; title: string; children: React.ReactNode }) {
-  return (
-    <section aria-labelledby={`seccion-${letter}`} className="scroll-mt-20 border-t border-line pt-8 first:border-t-0 first:pt-0">
-      <h2 id={`seccion-${letter}`} className="text-xl font-bold text-navy-900 sm:text-2xl">
-        <span className="text-accent">{letter}.</span> {title}
-      </h2>
-      <div className="mt-4 grid gap-4 leading-relaxed">{children}</div>
-    </section>
-  );
-}
-
 function List({ items }: { items: string[] }) {
   if (items.length === 0) return null;
   return (
-    <ul className="list-disc space-y-1.5 pl-5 marker:text-accent">
+    <ul className="list-disc space-y-1.5 pl-5 leading-relaxed marker:text-accent">
       {items.map((item) => (
         <li key={item}>{item}</li>
       ))}
@@ -72,154 +61,87 @@ export default async function VacancyPage({ params }: PageProps<"/puestos/[slug]
 
   if (!vacancy || vacancy.status !== "open") notFound();
 
-  const scheduleFacts = [
-    vacancy.schedule && { label: "Horario de este puesto", value: vacancy.schedule },
+  const conditionFacts = [
+    vacancy.schedule && { label: "Horario", value: vacancy.schedule },
     wc.scheduleStatement && { label: "Jornada", value: wc.scheduleStatement },
-    wc.overtimeStatement && { label: "Horas extra", value: wc.overtimeStatement },
-  ].filter((f): f is { label: string; value: string } => Boolean(f));
-
-  const restFacts = [
-    wc.vacationStatement && { label: "Vacaciones", value: wc.vacationStatement },
-    wc.holidaysStatement && { label: "Festivos", value: wc.holidaysStatement },
-    wc.weeklyRestStatement && { label: "Descanso semanal", value: wc.weeklyRestStatement },
-  ].filter((f): f is { label: string; value: string } => Boolean(f));
-
-  const travelFacts = [
-    vacancy.travelExpectations && { label: "Desplazamientos de este puesto", value: vacancy.travelExpectations },
-    wc.vehicleArrangementNote && { label: "Vehículo", value: wc.vehicleArrangementNote },
-    wc.travelTimeStatement && { label: "Tiempo de desplazamiento", value: wc.travelTimeStatement },
-    wc.travelJourneysNote && { label: "Trayectos que cuentan", value: wc.travelJourneysNote },
-    wc.travelDestinationsNote && { label: "Destinos y frecuencia", value: wc.travelDestinationsNote },
-    wc.overnightStaysNote && { label: "Pernoctas", value: wc.overnightStaysNote },
-    wc.expensesCoveredNote && { label: "Gastos cubiertos", value: wc.expensesCoveredNote },
-  ].filter((f): f is { label: string; value: string } => Boolean(f));
-
-  const contractFacts = [
     vacancy.contractType && { label: "Tipo de contrato", value: contractLabels[vacancy.contractType] },
     wc.collectiveAgreementStatement && { label: "Convenio colectivo aplicable", value: wc.collectiveAgreementStatement },
-    wc.employmentStatement && { label: "Formalización y pago", value: wc.employmentStatement },
+    vacancy.travelExpectations && { label: "Desplazamientos", value: vacancy.travelExpectations },
+    wc.vehicleArrangementNote && { label: "Vehículo", value: wc.vehicleArrangementNote },
+    wc.travelTimeStatement && { label: "Tiempo de desplazamiento", value: wc.travelTimeStatement },
+    wc.vacationStatement && { label: "Vacaciones", value: wc.vacationStatement },
+    wc.weeklyRestStatement && { label: "Descanso semanal", value: wc.weeklyRestStatement },
+    wc.expensesCoveredNote && { label: "Gastos cubiertos", value: wc.expensesCoveredNote },
   ].filter((f): f is { label: string; value: string } => Boolean(f));
 
   return (
     <>
       <PageHeader eyebrow={`Puestos · ${vacancy.location ?? company.location.city}`} title={vacancy.title}>
         {vacancy.summary ? <p>{vacancy.summary}</p> : null}
+        {vacancy.salaryRange ? <p className="text-base text-muted">{formatSalaryOrientativo(vacancy.salaryRange)}</p> : null}
       </PageHeader>
 
-      <Container className="grid max-w-3xl gap-8 py-14 sm:py-20">
-        {vacancy.summary ? (
-          <Section letter="A" title="Descripción del puesto">
-            <p>{vacancy.summary}</p>
-          </Section>
-        ) : null}
-
+      <Container className="grid max-w-3xl gap-10 py-14 sm:py-20">
         {vacancy.responsibilities.length > 0 ? (
-          <Section letter="B" title="Responsabilidades habituales">
-            <List items={vacancy.responsibilities} />
-          </Section>
+          <section>
+            <h2 className="text-xl font-bold text-navy-900 sm:text-2xl">Qué harás</h2>
+            <div className="mt-4">
+              <List items={vacancy.responsibilities} />
+            </div>
+          </section>
         ) : null}
 
         {vacancy.essentialRequirements.length > 0 || vacancy.desirableRequirements.length > 0 ? (
-          <Section letter="C" title="Requisitos y experiencia">
-            {vacancy.essentialRequirements.length > 0 ? (
-              <div>
-                <h3 className="font-bold text-navy-900">Imprescindible</h3>
-                <div className="mt-2">
-                  <List items={vacancy.essentialRequirements} />
+          <section>
+            <h2 className="text-xl font-bold text-navy-900 sm:text-2xl">Qué buscamos</h2>
+            <div className="mt-4 grid gap-6 sm:grid-cols-2">
+              {vacancy.essentialRequirements.length > 0 ? (
+                <div>
+                  <h3 className="font-bold text-navy-900">Imprescindible</h3>
+                  <div className="mt-2">
+                    <List items={vacancy.essentialRequirements} />
+                  </div>
                 </div>
-              </div>
-            ) : null}
-            {vacancy.desirableRequirements.length > 0 ? (
-              <div>
-                <h3 className="font-bold text-navy-900">Valorable</h3>
-                <div className="mt-2">
-                  <List items={vacancy.desirableRequirements} />
+              ) : null}
+              {vacancy.desirableRequirements.length > 0 ? (
+                <div>
+                  <h3 className="font-bold text-navy-900">Valorable</h3>
+                  <div className="mt-2">
+                    <List items={vacancy.desirableRequirements} />
+                  </div>
                 </div>
-              </div>
-            ) : null}
-          </Section>
+              ) : null}
+            </div>
+          </section>
         ) : null}
 
-        {vacancy.salaryRange ? (
-          <Section letter="D" title="Salario">
-            <p className="text-lg font-bold text-navy-900">{formatSalaryOrientativo(vacancy.salaryRange)}</p>
-            <p className="text-muted">
-              Es un importe bruto anual orientativo, pendiente de confirmación definitiva por la empresa; el importe neto
-              depende de las retenciones fiscales y de la Seguridad Social aplicables en cada caso.
+        {conditionFacts.length > 0 ? (
+          <section>
+            <h2 className="text-xl font-bold text-navy-900 sm:text-2xl">Condiciones laborales</h2>
+            <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+              {conditionFacts.map((f) => (
+                <Fact key={f.label} label={f.label}>
+                  {f.value}
+                </Fact>
+              ))}
+            </dl>
+            <p className="mt-4 text-sm text-muted">
+              Más detalle en{" "}
+              <Link href="/trabaja-con-nosotros#condiciones-de-trabajo" className="font-semibold text-accent underline-offset-4 hover:underline">
+                Condiciones de trabajo
+              </Link>
+              .
             </p>
-          </Section>
+          </section>
         ) : null}
 
-        {scheduleFacts.length > 0 ? (
-          <Section letter="E" title="Horarios y jornada laboral">
-            <dl className="grid gap-4 sm:grid-cols-2">
-              {scheduleFacts.map((f) => (
-                <Fact key={f.label} label={f.label}>
-                  {f.value}
-                </Fact>
-              ))}
-            </dl>
-          </Section>
-        ) : null}
-
-        {restFacts.length > 0 ? (
-          <Section letter="F" title="Vacaciones, festivos y descansos">
-            <dl className="grid gap-4 sm:grid-cols-2">
-              {restFacts.map((f) => (
-                <Fact key={f.label} label={f.label}>
-                  {f.value}
-                </Fact>
-              ))}
-            </dl>
-          </Section>
-        ) : null}
-
-        {travelFacts.length > 0 ? (
-          <Section letter="G" title="Desplazamientos y trabajo en obra">
-            <dl className="grid gap-4 sm:grid-cols-2">
-              {travelFacts.map((f) => (
-                <Fact key={f.label} label={f.label}>
-                  {f.value}
-                </Fact>
-              ))}
-            </dl>
-          </Section>
-        ) : null}
-
-        {contractFacts.length > 0 ? (
-          <Section letter="H" title="Contrato y condiciones laborales">
-            <dl className="grid gap-4 sm:grid-cols-2">
-              {contractFacts.map((f) => (
-                <Fact key={f.label} label={f.label}>
-                  {f.value}
-                </Fact>
-              ))}
-            </dl>
-          </Section>
-        ) : null}
-
-        {vacancy.learningOpportunities.length > 0 ? (
-          <Section letter="I" title="Qué puedes aprender">
-            <List items={vacancy.learningOpportunities} />
-          </Section>
-        ) : null}
-
-        <p className="text-sm text-muted">
-          Puedes ver el resto de condiciones comunes a todos los puestos en{" "}
-          <Link href="/trabaja-con-nosotros#condiciones-de-trabajo" className="font-semibold text-accent underline-offset-4 hover:underline">
-            Condiciones de trabajo
-          </Link>
-          .
-        </p>
-
-        <Section letter="J" title="Solicitar el puesto">
-          {vacancy.applicationInstructions ? <p>{vacancy.applicationInstructions}</p> : null}
-          <div>
-            <ButtonLink href={`/trabaja-con-nosotros?puesto=${encodeURIComponent(vacancy.title)}#aplicar`} className="text-lg sm:px-7">
-              Presentar mi candidatura
-            </ButtonLink>
+        <section className="rounded-lg border-l-4 border-accent bg-paper p-6">
+          <h2 className="text-xl font-bold text-navy-900 sm:text-2xl">Presentar mi candidatura</h2>
+          {vacancy.applicationInstructions ? <p className="mt-2 text-muted">{vacancy.applicationInstructions}</p> : null}
+          <div className="mt-6">
+            <SolicitudForm vacancyTitle={vacancy.title} vacancySlug={vacancy.id} />
           </div>
-        </Section>
+        </section>
       </Container>
 
       <JsonLd data={jobPostingData(company, vacancy, indexable)} />
