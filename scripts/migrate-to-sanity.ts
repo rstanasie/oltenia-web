@@ -154,15 +154,12 @@ async function main() {
   // and is listed for the owners instead (see CONTENT_CHECKLIST.md).
   await ensureDocument("workingConditions", "workingConditions", async () => ({
     employmentStatement: "Contratación formalizada correctamente, con retribución transparente y pagos puntuales.",
-    scheduleStatement:
-      "La jornada laboral es de 1.752 horas de trabajo efectivo en cómputo anual, según el convenio colectivo aplicable.",
+    scheduleStatement: "Jornada completa.",
     collectiveAgreementStatement: "Convenio Colectivo de Industria, Tecnología y Servicios del Metal de Zaragoza.",
-    vacationStatement:
-      "30 días naturales de vacaciones retribuidas al año, el mínimo establecido por el Estatuto de los Trabajadores (art. 38), salvo mejora del convenio aplicable.",
-    weeklyRestStatement: "Descanso semanal mínimo de día y medio ininterrumpido, según el Estatuto de los Trabajadores (art. 37).",
+    vacationStatement: "30 días naturales de vacaciones retribuidas al año.",
     siteSafetyStatement:
       "La empresa cumple con la normativa de prevención de riesgos laborales (Ley 31/1995): formación y equipos de protección adecuados a cada tarea.",
-    vehicleArrangementNote: "El vehículo de empresa es compartido entre el equipo, no asignado de forma individual.",
+    vehicleArrangementNote: "Desplazamientos de trabajo a cargo de la empresa.",
     travelTimeStatement: "Los desplazamientos de trabajo se cuentan y se pagan como tiempo de trabajo.",
     trainingStatement: "Cursos de formación autorizados, financiados por la empresa.",
     overtimeStatement:
@@ -333,6 +330,7 @@ async function main() {
     status: "open",
     shortDescription: "Primeros pasos",
     location: "Zaragoza",
+    order: 1,
     summary:
       "El punto de partida en el oficio: te incorporas a un equipo de instalación para familiarizarte con las herramientas, los materiales y la forma de trabajar en obra.",
     responsibilities: [
@@ -340,7 +338,7 @@ async function main() {
       "Preparar la zona de trabajo y los materiales antes de cada tarea.",
       "Aprender los procedimientos básicos de seguridad en obra.",
     ],
-    essentialRequirements: ["Disposición a aprender y a trabajar en equipo.", "Compromiso con el trabajo diario en obra."],
+    essentialRequirements: ["Buena actitud y ganas de aprender el oficio.", "Compromiso con el trabajo diario en obra."],
     desirableRequirements: ["Experiencia previa en construcción u otro oficio manual."],
     learningOpportunities: [
       "Cómo funciona un equipo de instalación de principio a fin.",
@@ -357,7 +355,8 @@ async function main() {
     status: "open",
     shortDescription: "Montaje supervisado",
     location: "Zaragoza",
-    summary: "Primeras tareas de montaje bajo supervisión, con el acento puesto en la precisión y en empezar a entender los planos.",
+    order: 2,
+    summary: "El siguiente paso tras los primeros meses en obra: montas bajo la guía de compañeros con más experiencia, ganando precisión y soltura.",
     responsibilities: [
       "Realizar tareas básicas de instalación bajo supervisión.",
       "Montar soportes y sistemas de anclaje.",
@@ -376,7 +375,8 @@ async function main() {
     status: "open",
     shortDescription: "Trabajo autónomo",
     location: "Zaragoza",
-    summary: "Instalaciones habituales con independencia creciente: interpretar planos, montar tramos completos y resolver problemas comunes.",
+    order: 3,
+    summary: "Trabajas con autonomía en el día a día, sin necesitar supervisión constante.",
     responsibilities: [
       "Realizar instalaciones habituales con independencia creciente.",
       "Interpretar planos técnicos sin supervisión constante.",
@@ -396,8 +396,8 @@ async function main() {
     status: "open",
     shortDescription: "Resolución técnica",
     location: "Zaragoza",
-    summary:
-      "Instalaciones técnicamente exigentes: adaptar conductos a espacios complejos, resolver imprevistos y apoyar a compañeros con menos experiencia.",
+    order: 4,
+    summary: "El nivel con más autonomía en obra: resuelves instalaciones complejas y apoyas al resto del equipo cuando hace falta.",
     responsibilities: [
       "Realizar instalaciones técnicamente exigentes.",
       "Adaptar conductos a espacios complejos.",

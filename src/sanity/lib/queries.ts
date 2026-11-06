@@ -106,7 +106,7 @@ export const SITE_QUERY = defineQuery(`{
   "services": *[_type == "service"] | order(order asc) {
     serviceId, name, summary, activities, details, "photo": photo${imageWithAltFragment}
   },
-  "vacancies": *[_type == "vacancy"] {${vacancyFields}},
+  "vacancies": *[_type == "vacancy"] | order(order asc) {${vacancyFields}},
   "photos": *[_type == "photo"] | order(order asc) {
     "asset": image.asset->{_id, url, metadata{dimensions}, originalFilename},
     "hotspot": image.hotspot,

@@ -55,12 +55,19 @@ privacidad. Para que esto funcione en producción:
 - [ ] Horario de atención
 
 ## Puestos — Studio → «Puestos»
-Ya existen 4 puestos (Peón/Ayudante, Oficial de tercera, Oficial de segunda, Oficial de primera)
-con funciones, requisitos imprescindibles/valorables y qué se puede aprender. Cada página de
-puesto (`/puestos/[slug]`) ahora muestra las secciones A–J: descripción, responsabilidades,
-requisitos, salario, horario, vacaciones/festivos, desplazamientos, contrato, aprendizaje y botón
-de candidatura — las secciones E–H reutilizan el contenido de «Condiciones de trabajo» (mismo
-origen para todos los puestos, nada duplicado a mano).
+Ya existen 4 puestos (Peón/Ayudante, Oficial de tercera, Oficial de segunda, Oficial de primera).
+Cada página de puesto (`/puestos/[slug]`) muestra: título + salario + descripción breve, «Qué
+harás», «Qué buscamos» (imprescindible/valorable), «Condiciones laborales» (comparte el mismo
+origen que «Condiciones de trabajo» — nada duplicado a mano) y el formulario de candidatura
+embebido, sin pasos extra.
+
+**Sintetizado 2026-11-06**: las descripciones (`summary`) de Oficial de tercera, segunda y
+primera repetían casi palabra por palabra su lista de «Qué harás» — se reescribieron para dar una
+idea distinta (qué distingue a ese nivel) en vez de volver a listar las mismas tareas. Peón/Ayudante
+ahora pide como imprescindible «Buena actitud y ganas de aprender el oficio» (antes «Disposición a
+aprender y a trabajar en equipo») — mismo sentido, pero deja más claro desde el primer vistazo que
+no se exige experiencia, sin usar un reclamo tipo «SIN EXPERIENCIA». Los demás puestos no cambiaron
+sus requisitos de experiencia/autonomía.
 - [x] **Salario** (revisado 2026-11-04, banda más estrecha a petición de la empresa): Peón/Ayudante
       20.000–22.000 €; Oficial de tercera 22.000–24.000 €; Oficial de segunda 24.000–27.000 €;
       Oficial de primera 27.000–30.000 € (brutos/año), mostrado como «Salario bruto anual
@@ -108,20 +115,21 @@ Esta sección solo aparece en «Trabaja con nosotros» (ancla `#condiciones-de-t
 también desde cada página de puesto) si al menos un campo tiene contenido; cada campo vacío se
 oculta, nunca se publica un «pendiente de confirmar» — lo que falta se lista aquí en su lugar.
 
-**Categoría 1 — hechos legales ya verificados (Estatuto de los Trabajadores / Ley 31/1995),
-válidos para cualquier empresa en España salvo mejora del convenio**: 30 días naturales de
-vacaciones anuales (art. 38 ET), descanso semanal mínimo de día y medio (art. 37 ET), prevención
-de riesgos laborales obligatoria (Ley 31/1995). Publicados como suelo legal, no como política
-específica de Oltenia.
+**Simplificado 2026-11-06** (a petición del propietario, para no presentar mínimos legales como
+ventajas diferenciales): se quitó la mención al descanso semanal de día y medio (art. 37 ET) —
+sigue siendo cierto, pero no aporta nada para decidir si solicitar el puesto. El horario pasó de
+«1.752 horas de trabajo efectivo en cómputo anual, según el convenio» a simplemente **«Jornada
+completa»**; el dato exacto de horas/convenio queda solo en este documento, no en la web pública.
+«Vehículo de empresa compartido» pasó a **«Desplazamientos de trabajo a cargo de la empresa»** —
+redactado así a propósito para no dar a entender que cubre el trayecto habitual desde casa, que no
+está confirmado. Vacaciones se acortó a «30 días naturales de vacaciones retribuidas al año», sin
+citar que es el mínimo legal (art. 38 ET) ni la coletilla «salvo mejora del convenio».
 
-**Categoría 2 — confirmado por la empresa y publicado**: contratación formalizada y retribución
-transparente, convenio aplicable (Convenio Colectivo de Industria, Tecnología y Servicios del
-Metal de Zaragoza), jornada de 1.752 horas efectivas/año según ese convenio, vehículo de empresa
-compartido entre el equipo (no asignado individualmente), desplazamientos contados como tiempo de
-trabajo, horas extra voluntarias y compensadas, y la nota sobre la base como punto de encuentro.
-No se publicó «40 horas/semana»: el convenio fija un cómputo ANUAL (1.752 h/año ≈ 33,7 h/semana de
-media), no una cifra semanal fija; si la empresa reparte efectivamente 40h/semana en temporada
-alta, se puede añadir como matiz.
+**Confirmado por la empresa y publicado**: contratación formalizada y retribución transparente,
+convenio aplicable (Convenio Colectivo de Industria, Tecnología y Servicios del Metal de
+Zaragoza), jornada completa, desplazamientos de trabajo a cargo de la empresa, desplazamientos
+contados como tiempo de trabajo, horas extra voluntarias y compensadas, y la nota sobre la base
+como punto de encuentro.
 
 **Categoría 3 — pendiente de confirmar con la empresa** (no inventado, por eso sigue oculto):
 - [ ] **Días festivos exactos de este año** — el campo publicado remite al calendario laboral
@@ -131,6 +139,9 @@ alta, se puede añadir como matiz.
 - [ ] **Gastos cubiertos** en los desplazamientos: dietas, alojamiento, etc. (`expensesCoveredNote`)
 - [ ] **Formación**: ¿qué cursos o aprendizaje práctico se ofrece realmente? (`trainingStatement`)
 - [ ] **Tipo de contrato** ofrecido realmente (indefinido, temporal, fijo-discontinuo…) por puesto
+- [ ] **¿El desplazamiento a cargo de la empresa incluye el trayecto habitual desde casa, o solo
+      entre obras/base?** No se ha dado por supuesto — si se confirma, se puede precisar en
+      `vehicleArrangementNote` o en `travelJourneysNote`.
 
 ## Puestos abiertos: ideas de desarrollo futuro (no construir todavía)
 - [ ] Valorar con el equipo (antes de programar nada) una checklist privada de habilidades,

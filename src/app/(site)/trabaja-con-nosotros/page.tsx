@@ -53,9 +53,7 @@ export default async function RecruitmentPage() {
   const pick = (filename: string) => findPhoto(projects, filename);
 
   const heroPhoto = pick("instalacion-conductos-fachada-01.jpg");
-  const discoverPhotos = [pick("instalacion-conductos-nave-01.jpg"), pick("equipos-climatizacion-01.jpg")].filter(
-    (p): p is NonNullable<typeof p> => p !== null,
-  );
+  const discoverPhoto = pick("instalacion-conductos-fachada-01.jpg");
 
   return (
     <LightboxProvider>
@@ -101,7 +99,8 @@ export default async function RecruitmentPage() {
           <div id="aplicar" className="mt-10 scroll-mt-16 sm:mt-12">
             <h3 className="text-lg font-bold">¿No sabes qué puesto encaja contigo?</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Cuéntanos tu experiencia y te decimos si encajas en algún equipo.
+              Cuéntanos tu experiencia y te decimos si encajas en el equipo. Si no tienes experiencia, no te
+              preocupes: el requerimiento más importante es tu actitud y tus ganas de aprender el oficio.
             </p>
             <div className="mt-5 grid gap-6 lg:grid-cols-2">
               <div className="rounded-lg border-l-4 border-accent bg-paper p-6">
@@ -122,7 +121,7 @@ export default async function RecruitmentPage() {
       {/* C. MUCHO MÁS QUE INSTALAR CONDUCTOS */}
       <section aria-labelledby="oficio-titulo" className="bg-paper py-16 sm:py-24">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
               <h2 id="oficio-titulo" className="text-3xl font-bold sm:text-4xl">
                 Mucho más que instalar conductos
@@ -147,11 +146,9 @@ export default async function RecruitmentPage() {
                 .
               </p>
             </div>
-            {discoverPhotos.length > 0 ? (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                {discoverPhotos.map((photo) => (
-                  <NarrativePhoto key={photo.src} photo={photo} aspect="aspect-[4/3]" />
-                ))}
+            {discoverPhoto ? (
+              <div className="min-h-64 lg:h-full">
+                <NarrativePhoto photo={discoverPhoto} aspect="aspect-[4/3] lg:aspect-auto lg:h-full" />
               </div>
             ) : null}
           </div>
@@ -165,19 +162,13 @@ export default async function RecruitmentPage() {
             <h2 id="condiciones-titulo" className="text-3xl font-bold sm:text-4xl">
               Condiciones de trabajo
             </h2>
-            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
-              Lo más importante para saber si este trabajo encaja contigo. Cada puesto tiene además su propia página con
-              el detalle completo.
-            </p>
             <dl className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
               {workingConditions.employmentStatement ? <Fact label="Contratación y retribución">{workingConditions.employmentStatement}</Fact> : null}
               {workingConditions.collectiveAgreementStatement ? <Fact label="Convenio colectivo aplicable">{workingConditions.collectiveAgreementStatement}</Fact> : null}
               {workingConditions.scheduleStatement ? <Fact label="Horario">{workingConditions.scheduleStatement}</Fact> : null}
               {workingConditions.vacationStatement ? <Fact label="Vacaciones">{workingConditions.vacationStatement}</Fact> : null}
               {workingConditions.holidaysStatement ? <Fact label="Festivos">{workingConditions.holidaysStatement}</Fact> : null}
-              {workingConditions.weeklyRestStatement ? <Fact label="Descanso semanal">{workingConditions.weeklyRestStatement}</Fact> : null}
-              {workingConditions.vehicleArrangementNote ? <Fact label="Vehículo">{workingConditions.vehicleArrangementNote}</Fact> : null}
-              {workingConditions.travelTimeStatement ? <Fact label="Desplazamientos como tiempo de trabajo">{workingConditions.travelTimeStatement}</Fact> : null}
+              {workingConditions.vehicleArrangementNote ? <Fact label="Desplazamientos">{workingConditions.vehicleArrangementNote}</Fact> : null}
               {workingConditions.travelJourneysNote ? <Fact label="Trayectos que se cuentan">{workingConditions.travelJourneysNote}</Fact> : null}
               {workingConditions.travelDestinationsNote ? <Fact label="Destinos y frecuencia">{workingConditions.travelDestinationsNote}</Fact> : null}
               {workingConditions.overnightStaysNote ? <Fact label="Pernoctas">{workingConditions.overnightStaysNote}</Fact> : null}

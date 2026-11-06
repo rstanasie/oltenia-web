@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/Container";
 import { JsonLd } from "@/components/JsonLd";
@@ -62,16 +61,18 @@ export default async function VacancyPage({ params }: PageProps<"/puestos/[slug]
   if (!vacancy || vacancy.status !== "open") notFound();
 
   const conditionFacts = [
-    vacancy.schedule && { label: "Horario", value: vacancy.schedule },
-    wc.scheduleStatement && { label: "Jornada", value: wc.scheduleStatement },
-    vacancy.contractType && { label: "Tipo de contrato", value: contractLabels[vacancy.contractType] },
+    wc.employmentStatement && { label: "Contratación y retribución", value: wc.employmentStatement },
     wc.collectiveAgreementStatement && { label: "Convenio colectivo aplicable", value: wc.collectiveAgreementStatement },
-    vacancy.travelExpectations && { label: "Desplazamientos", value: vacancy.travelExpectations },
-    wc.vehicleArrangementNote && { label: "Vehículo", value: wc.vehicleArrangementNote },
-    wc.travelTimeStatement && { label: "Tiempo de desplazamiento", value: wc.travelTimeStatement },
+    vacancy.schedule && { label: "Horario de este puesto", value: vacancy.schedule },
+    wc.scheduleStatement && { label: "Horario", value: wc.scheduleStatement },
+    vacancy.contractType && { label: "Tipo de contrato", value: contractLabels[vacancy.contractType] },
     wc.vacationStatement && { label: "Vacaciones", value: wc.vacationStatement },
-    wc.weeklyRestStatement && { label: "Descanso semanal", value: wc.weeklyRestStatement },
+    vacancy.travelExpectations && { label: "Desplazamientos de este puesto", value: vacancy.travelExpectations },
+    wc.vehicleArrangementNote && { label: "Desplazamientos", value: wc.vehicleArrangementNote },
     wc.expensesCoveredNote && { label: "Gastos cubiertos", value: wc.expensesCoveredNote },
+    wc.siteSafetyStatement && { label: "Seguridad en obra", value: wc.siteSafetyStatement },
+    wc.trainingStatement && { label: "Formación y aprendizaje", value: wc.trainingStatement },
+    wc.overtimeStatement && { label: "Horas extra", value: wc.overtimeStatement },
   ].filter((f): f is { label: string; value: string } => Boolean(f));
 
   return (
@@ -125,13 +126,6 @@ export default async function VacancyPage({ params }: PageProps<"/puestos/[slug]
                 </Fact>
               ))}
             </dl>
-            <p className="mt-4 text-sm text-muted">
-              Más detalle en{" "}
-              <Link href="/trabaja-con-nosotros#condiciones-de-trabajo" className="font-semibold text-accent underline-offset-4 hover:underline">
-                Condiciones de trabajo
-              </Link>
-              .
-            </p>
           </section>
         ) : null}
 

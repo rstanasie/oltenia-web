@@ -37,6 +37,7 @@ export const vacancy = defineType({
       description: 'Ej. "Primeros pasos" o "Trabajo autónomo". No repitas aquí lo que ya dice la introducción de la sección.',
     }),
     defineField({ name: "location", title: "Ubicación", type: "string", group: "main" }),
+    defineField({ name: "order", title: "Orden", type: "number", group: "main", description: "Determina el orden en «Puestos abiertos», de menor a mayor.", initialValue: 0 }),
     defineField({
       name: "summary",
       title: "Introducción del puesto",
@@ -109,7 +110,10 @@ export const vacancy = defineType({
         "Deja vacío hasta que el rango esté aprobado por la empresa y comprobado contra el convenio aplicable. No publiques una cifra sin esa confirmación.",
     }),
   ],
-  orderings: [{ title: "Más recientes primero", name: "datePostedDesc", by: [{ field: "datePosted", direction: "desc" }] }],
+  orderings: [
+    { title: "Orden manual", name: "orderAsc", by: [{ field: "order", direction: "asc" }] },
+    { title: "Más recientes primero", name: "datePostedDesc", by: [{ field: "datePosted", direction: "desc" }] },
+  ],
   preview: {
     select: { title: "title", status: "status" },
     prepare: ({ title, status }) => ({ title, subtitle: status === "open" ? "Abierta" : "Cerrada" }),
