@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/Container";
 import { DraftNotice, Missing } from "@/components/DraftNotice";
+import { JsonLd } from "@/components/JsonLd";
 import { LegalParagraphs, LegalSection } from "@/components/LegalSection";
 import { PageHeader } from "@/components/PageHeader";
 import { getCompany } from "@/content/company";
@@ -8,6 +9,7 @@ import { formatAddress, isCompleteAddress, isValidEmail, mailtoHref } from "@/li
 import { missingLegalNotice } from "@/lib/legal";
 import { pageMetadata } from "@/lib/metadata";
 import { envSite, isIndexable } from "@/lib/site";
+import { pageEntityData } from "@/lib/structured-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const company = await getCompany();
@@ -22,6 +24,7 @@ export default async function LegalNoticePage() {
   const company = await getCompany();
   const l = company.legal;
   const missing = missingLegalNotice(l);
+  const indexable = isIndexable(envSite, company.publication.approved) && l.reviewed;
 
   return (
     <>
@@ -108,6 +111,16 @@ export default async function LegalNoticePage() {
 
         {l.lastReviewed ? <p className="text-sm text-muted">Última revisión: {l.lastReviewed}</p> : null}
       </Container>
+
+      <JsonLd
+        data={pageEntityData({
+          company,
+          indexable,
+          path: "/aviso-legal",
+          name: "Aviso legal",
+          description: `Aviso legal del sitio web de ${company.brand.name}.`,
+        })}
+      />
     </>
   );
 }

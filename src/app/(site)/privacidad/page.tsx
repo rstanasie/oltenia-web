@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/Container";
 import { DraftNotice, Missing } from "@/components/DraftNotice";
+import { JsonLd } from "@/components/JsonLd";
 import { LegalParagraphs, LegalSection } from "@/components/LegalSection";
 import { PageHeader } from "@/components/PageHeader";
 import { getCompany } from "@/content/company";
@@ -8,6 +9,7 @@ import { formatAddress } from "@/lib/contact";
 import { missingPrivacy } from "@/lib/legal";
 import { pageMetadata } from "@/lib/metadata";
 import { envSite, isIndexable } from "@/lib/site";
+import { pageEntityData } from "@/lib/structured-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const company = await getCompany();
@@ -22,6 +24,7 @@ export default async function PrivacyPage() {
   const company = await getCompany();
   const l = company.legal;
   const missing = missingPrivacy(l);
+  const indexable = isIndexable(envSite, company.publication.approved) && l.reviewed;
 
   return (
     <>
@@ -109,6 +112,16 @@ export default async function PrivacyPage() {
 
         {l.lastReviewed ? <p className="text-sm text-muted">Última revisión: {l.lastReviewed}</p> : null}
       </Container>
+
+      <JsonLd
+        data={pageEntityData({
+          company,
+          indexable,
+          path: "/privacidad",
+          name: "Privacidad",
+          description: `Información sobre el tratamiento de datos personales en el sitio web de ${company.brand.name}.`,
+        })}
+      />
     </>
   );
 }

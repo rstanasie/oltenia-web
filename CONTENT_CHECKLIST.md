@@ -68,17 +68,16 @@ ahora pide como imprescindible «Buena actitud y ganas de aprender el oficio» (
 aprender y a trabajar en equipo») — mismo sentido, pero deja más claro desde el primer vistazo que
 no se exige experiencia, sin usar un reclamo tipo «SIN EXPERIENCIA». Los demás puestos no cambiaron
 sus requisitos de experiencia/autonomía.
-- [x] **Salario** (revisado 2026-11-04, banda más estrecha a petición de la empresa): Peón/Ayudante
-      20.000–22.000 €; Oficial de tercera 22.000–24.000 €; Oficial de segunda 24.000–27.000 €;
-      Oficial de primera 27.000–30.000 € (brutos/año), mostrado como «Salario bruto anual
-      orientativo: X–Y €» en cada página de puesto. **Son bandas editoriales provisionales, no
-      ofertas contractuales confirmadas.**
-      ⚠️ **Discrepancia a revisar**: dos fuentes secundarias (no el texto oficial del BOPZ)
-      situaban el salario mínimo de convenio para Peón en ~20.198–21.274 €/año — el suelo de
-      20.000 € de esta banda podría quedar ligeramente por debajo de ese mínimo. Antes de tratar
-      esta banda como oferta real, pedir a la gestoría/asesoría laboral que confirme la tabla
-      salarial vigente del Convenio Colectivo de Industria, Tecnología y Servicios del Metal de
-      Zaragoza y suba el suelo de Peón si hace falta.
+- [ ] **Salario** (quitado 2026-11-07 a petición de la empresa, placeholder para la próxima
+      versión): el campo `salaryRange` se dejó vacío en los 4 puestos — la sección «Salario»
+      desaparece automáticamente de cada página (mismo criterio que el resto del sitio: nunca se
+      publica un «pendiente de confirmar» visible). Las bandas que se habían usado antes de
+      quitarlo (Peón/Ayudante 20.000–22.000 €; Oficial de tercera 22.000–24.000 €; Oficial de
+      segunda 24.000–27.000 €; Oficial de primera 27.000–30.000 €, brutos/año) quedan aquí solo
+      como referencia de partida para cuando se vuelva a rellenar — no se han confirmado contra el
+      convenio aplicable y no deben republicarse sin esa verificación (una comprobación anterior con
+      dos fuentes secundarias, no el texto oficial del BOPZ, situaba el mínimo de convenio para
+      Peón en ~20.198–21.274 €/año, justo por encima del suelo de 20.000 € usado antes).
 - [ ] Carné de conducir (si aplica a algún puesto)
 - [ ] Tipo de contrato por puesto (de momento cada página muestra solo el convenio aplicable, sin
       comprometerse a un tipo de contrato concreto, hasta que se confirme)

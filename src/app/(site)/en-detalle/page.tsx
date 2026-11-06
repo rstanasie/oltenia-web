@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/Container";
+import { JsonLd } from "@/components/JsonLd";
 import { NarrativePhoto } from "@/components/NarrativePhoto";
 import { getCompany } from "@/content/company";
 import { getEnDetallePage } from "@/content/pages";
 import { pageMetadata } from "@/lib/metadata";
 import { envSite, isIndexable } from "@/lib/site";
+import { pageEntityData } from "@/lib/structured-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const company = await getCompany();
@@ -20,14 +22,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function EnDetallePage() {
-  const page = await getEnDetallePage();
+  const [company, page] = await Promise.all([getCompany(), getEnDetallePage()]);
+  const indexable = isIndexable(envSite, company.publication.approved);
 
   return (
     <>
       <div className="py-14 sm:py-20">
         <Container>
-          <p className="text-sm font-bold uppercase tracking-[0.14em] text-accent">En detalle</p>
-          <h1 className="mt-2 text-3xl font-bold sm:text-4xl">El oficio detrás de cada instalación</h1>
+          <h1 className="text-3xl font-bold sm:text-4xl">El oficio detrás de cada instalación</h1>
           {page.introText ? <p className="mt-4 text-lg leading-relaxed text-muted">{page.introText}</p> : null}
 
           <div className="mt-14 sm:mt-16">
@@ -84,6 +86,16 @@ export default async function EnDetallePage() {
           </div>
         </Container>
       </div>
+
+      <JsonLd
+        data={pageEntityData({
+          company,
+          indexable,
+          path: "/en-detalle",
+          name: "En detalle",
+          description: `El oficio detrás de las instalaciones de ${company.brand.name}, incluida su experiencia en fabricación.`,
+        })}
+      />
     </>
   );
 }

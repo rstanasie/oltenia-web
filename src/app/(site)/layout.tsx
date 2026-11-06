@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Space_Grotesk } from "next/font/google";
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import type { ReactNode } from "react";
@@ -9,10 +10,12 @@ import { JsonLd } from "@/components/JsonLd";
 import { PreviewBanner } from "@/components/PreviewBanner";
 import { getCompany } from "@/content/company";
 import { isIndexable } from "@/lib/site";
-import { localBusinessData } from "@/lib/structured-data";
+import { localBusinessData, organizationData } from "@/lib/structured-data";
 import { SanityLive } from "@/sanity/lib/live";
 import { envSite } from "@/lib/site";
 import "../globals.css";
+
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-heading", display: "swap" });
 
 export async function generateMetadata(): Promise<Metadata> {
   const company = await getCompany();
@@ -41,7 +44,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const indexable = isIndexable(envSite, company.publication.approved);
 
   return (
-    <html lang="es" data-scroll-behavior="smooth">
+    <html lang="es" data-scroll-behavior="smooth" className={spaceGrotesk.variable}>
       <body className="flex min-h-dvh flex-col">
         <a
           href="#contenido"
@@ -56,6 +59,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           {children}
         </main>
         <Footer />
+        <JsonLd data={organizationData(company, indexable)} />
         <JsonLd data={localBusinessData(company, indexable)} />
         <SanityLive />
         {isDraftMode ? <VisualEditing /> : null}

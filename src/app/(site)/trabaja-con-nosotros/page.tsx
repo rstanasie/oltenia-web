@@ -5,6 +5,7 @@ import { ApplicationForm } from "@/components/ApplicationForm";
 import { ButtonLink } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { DirectContactCard } from "@/components/DirectContactCard";
+import { JsonLd } from "@/components/JsonLd";
 import { LightboxProvider } from "@/components/Lightbox";
 import { NarrativePhoto } from "@/components/NarrativePhoto";
 import { VacancyCards } from "@/components/VacancyCards";
@@ -13,6 +14,7 @@ import { getRecruitmentPage, getSeoSettings, getWorkingConditions } from "@/cont
 import { findPhoto, openVacancies, publicAddress, recruitmentChannels } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
 import { envSite, isIndexable } from "@/lib/site";
+import { vacancyCollectionData } from "@/lib/structured-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [company, seo] = await Promise.all([getCompany(), getSeoSettings()]);
@@ -37,7 +39,7 @@ const discoverPoints = [
 
 function Fact({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="border-l-4 border-accent pl-4">
+    <div>
       <dt className="text-sm font-bold uppercase tracking-[0.12em] text-muted">{label}</dt>
       <dd className="mt-1 leading-relaxed text-navy-900">{children}</dd>
     </div>
@@ -46,6 +48,7 @@ function Fact({ label, children }: { label: string; children: ReactNode }) {
 
 export default async function RecruitmentPage() {
   const [company, hero, workingConditions] = await Promise.all([getCompany(), getRecruitmentPage(), getWorkingConditions()]);
+  const indexable = isIndexable(envSite, company.publication.approved);
   const vacancies = openVacancies(company);
   const channels = recruitmentChannels(company);
   const address = publicAddress(company);
@@ -67,10 +70,7 @@ export default async function RecruitmentPage() {
         ) : null}
         <Container className="py-20 sm:py-28 lg:py-32">
           <div className="max-w-2xl">
-            <p className="text-sm font-bold uppercase tracking-[0.16em] text-accent-soft">
-              {hero.heroEyebrow || `Empleo · ${company.location.city}`}
-            </p>
-            <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] text-white sm:text-6xl">{hero.heroHeadline}</h1>
+            <h1 className="text-4xl font-extrabold leading-[1.05] text-white sm:text-6xl">{hero.heroHeadline}</h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-navy-200 sm:text-xl">{hero.heroSubtext}</p>
             <div className="mt-10">
               <ButtonLink href="/trabaja-con-nosotros#puestos" className="text-lg sm:px-7">
@@ -103,7 +103,7 @@ export default async function RecruitmentPage() {
               preocupes: el requerimiento más importante es tu actitud y tus ganas de aprender el oficio.
             </p>
             <div className="mt-5 grid gap-6 lg:grid-cols-2">
-              <div className="rounded-lg border-l-4 border-accent bg-paper p-6">
+              <div className="rounded-lg bg-paper p-6">
                 <ApplicationForm channels={channels} brandName={company.brand.name} />
               </div>
               <DirectContactCard
@@ -201,6 +201,17 @@ export default async function RecruitmentPage() {
           </ButtonLink>
         </Container>
       </section>
+
+      <JsonLd
+        data={vacancyCollectionData(
+          company,
+          indexable,
+          "/trabaja-con-nosotros",
+          "Trabaja con nosotros",
+          `Puestos abiertos en instalación de ventilación y climatización en ${company.location.city}, y cómo presentarte a ${company.brand.name}.`,
+          vacancies,
+        )}
+      />
     </LightboxProvider>
   );
 }

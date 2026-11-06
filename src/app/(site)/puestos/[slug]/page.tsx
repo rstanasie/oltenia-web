@@ -46,7 +46,7 @@ function List({ items }: { items: string[] }) {
 
 function Fact({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="border-l-4 border-accent pl-4">
+    <div>
       <dt className="text-sm font-bold uppercase tracking-[0.1em] text-muted">{label}</dt>
       <dd className="mt-1 text-navy-900">{children}</dd>
     </div>
@@ -61,6 +61,7 @@ export default async function VacancyPage({ params }: PageProps<"/puestos/[slug]
   if (!vacancy || vacancy.status !== "open") notFound();
 
   const conditionFacts = [
+    { label: "Ubicación", value: vacancy.location ?? company.location.city },
     wc.employmentStatement && { label: "Contratación y retribución", value: wc.employmentStatement },
     wc.collectiveAgreementStatement && { label: "Convenio colectivo aplicable", value: wc.collectiveAgreementStatement },
     vacancy.schedule && { label: "Horario de este puesto", value: vacancy.schedule },
@@ -77,7 +78,7 @@ export default async function VacancyPage({ params }: PageProps<"/puestos/[slug]
 
   return (
     <>
-      <PageHeader eyebrow={`Puestos · ${vacancy.location ?? company.location.city}`} title={vacancy.title}>
+      <PageHeader title={vacancy.title}>
         {vacancy.summary ? <p>{vacancy.summary}</p> : null}
         {vacancy.salaryRange ? <p className="text-base text-muted">{formatSalaryOrientativo(vacancy.salaryRange)}</p> : null}
       </PageHeader>
@@ -129,7 +130,7 @@ export default async function VacancyPage({ params }: PageProps<"/puestos/[slug]
           </section>
         ) : null}
 
-        <section className="rounded-lg border-l-4 border-accent bg-paper p-6">
+        <section className="rounded-lg border border-line bg-white p-8">
           <h2 className="text-xl font-bold text-navy-900 sm:text-2xl">Presentar mi candidatura</h2>
           {vacancy.applicationInstructions ? <p className="mt-2 text-muted">{vacancy.applicationInstructions}</p> : null}
           <div className="mt-6">

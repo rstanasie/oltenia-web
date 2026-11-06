@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ButtonLink } from "@/components/Button";
 import { Container } from "@/components/Container";
+import { JsonLd } from "@/components/JsonLd";
 import { LightboxProvider } from "@/components/Lightbox";
 import { NarrativePhoto } from "@/components/NarrativePhoto";
 import { PhotoCarousel } from "@/components/PhotoCarousel";
@@ -10,6 +11,7 @@ import type { Photo } from "@/content/types";
 import { findPhoto, hasCustomerContact, photosByCaptions, sectorLabels } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
 import { envSite, isIndexable } from "@/lib/site";
+import { servicesPageData } from "@/lib/structured-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [company, seo] = await Promise.all([getCompany(), getSeoSettings()]);
@@ -30,6 +32,7 @@ function onlyPhotos(photos: (Photo | null)[]): Photo[] {
 
 export default async function ServicesPage() {
   const [company, page] = await Promise.all([getCompany(), getServicesPage()]);
+  const indexable = isIndexable(envSite, company.publication.approved);
   const { sectors, serviceArea, brands } = company.serviceDetails;
   const facts = [
     sectors.length > 0 && { label: "Tipos de trabajo", value: sectors.map((s) => sectorLabels[s]).join(", ") },
@@ -70,8 +73,7 @@ export default async function ServicesPage() {
         <Container className="py-14 sm:py-20">
           <div className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.14em] text-accent">{page.heroEyebrow}</p>
-              <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{page.heroHeading}</h1>
+              <h1 className="text-3xl font-bold sm:text-4xl">{page.heroHeading}</h1>
               {page.heroIntroPara1 ? <p className="mt-4 text-lg leading-relaxed text-muted">{page.heroIntroPara1}</p> : null}
               {page.heroIntroPara2 ? <p className="mt-4 text-lg leading-relaxed text-muted">{page.heroIntroPara2}</p> : null}
             </div>
@@ -257,7 +259,7 @@ export default async function ServicesPage() {
 
             <div
               aria-labelledby="descubre-oficio-titulo"
-              className="mt-12 flex flex-col gap-5 rounded-xl border-l-8 border-accent bg-paper p-8 shadow-sm ring-1 ring-line sm:mt-16 sm:flex-row sm:items-center sm:justify-between"
+              className="mt-12 flex flex-col gap-5 rounded-xl bg-paper p-8 shadow-sm ring-1 ring-line sm:mt-16 sm:flex-row sm:items-center sm:justify-between"
             >
               <p id="descubre-oficio-titulo" className="max-w-xl text-lg leading-relaxed text-navy-900">
                 Detrás de cada instalación hay un proceso de fabricación. Conoce los detalles y la experiencia que
@@ -279,7 +281,7 @@ export default async function ServicesPage() {
             </h2>
             <dl className="mt-6 grid gap-6 sm:grid-cols-2">
               {facts.map((fact) => (
-                <div key={fact.label} className="border-l-4 border-accent pl-4">
+                <div key={fact.label}>
                   <dt className="text-sm font-bold uppercase tracking-[0.12em] text-muted">{fact.label}</dt>
                   <dd className="mt-1 text-lg font-semibold text-navy-900">{fact.value}</dd>
                 </div>
@@ -302,6 +304,16 @@ export default async function ServicesPage() {
           </Container>
         </section>
       ) : null}
+
+      <JsonLd
+        data={servicesPageData(
+          company,
+          indexable,
+          "/servicios",
+          "Servicios",
+          `Ventilación, climatización y aire acondicionado en ${company.location.city}. Conoce las áreas de trabajo de ${company.brand.name}.`,
+        )}
+      />
     </LightboxProvider>
   );
 }

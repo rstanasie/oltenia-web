@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { ContactActions } from "@/components/ContactActions";
 import { Container } from "@/components/Container";
+import { JsonLd } from "@/components/JsonLd";
 import { PageHeader } from "@/components/PageHeader";
 import { getCompany } from "@/content/company";
 import { getSeoSettings } from "@/content/pages";
@@ -10,6 +11,7 @@ import { formatAddress, formatPhone, hasAnyChannel, mailtoHref, mapHref, telHref
 import { customerChannels, publicAddress, recruitmentChannels } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
 import { envSite, isIndexable } from "@/lib/site";
+import { pageEntityData } from "@/lib/structured-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [company, seo] = await Promise.all([getCompany(), getSeoSettings()]);
@@ -28,6 +30,7 @@ const linkClass = "inline-flex min-h-11 items-center font-semibold underline-off
 
 export default async function ContactPage() {
   const company = await getCompany();
+  const indexable = isIndexable(envSite, company.publication.approved);
   const recruitment = recruitmentChannels(company);
   const customer = customerChannels(company);
   const address = publicAddress(company);
@@ -85,14 +88,13 @@ export default async function ContactPage() {
 
   return (
     <>
-      <PageHeader eyebrow={`${company.location.city}, ${company.location.country}`} title="Contacto">
+      <PageHeader title="Contacto">
         <p>¿Buscas trabajo con nosotros o tienes una consulta sobre nuestros servicios? Aquí tienes cómo escribirnos.</p>
       </PageHeader>
 
       <Container className="grid gap-12 py-16 sm:py-20 lg:grid-cols-[1.3fr_1fr]">
         <section aria-labelledby="empleo-titulo" className="rounded-xl border-2 border-accent bg-white p-8">
-          <p className="text-sm font-bold uppercase tracking-[0.14em] text-accent">Candidaturas</p>
-          <h2 id="empleo-titulo" className="mt-2 text-2xl font-bold sm:text-3xl">
+          <h2 id="empleo-titulo" className="text-2xl font-bold sm:text-3xl">
             ¿Quieres trabajar con nosotros?
           </h2>
           <p className="mt-4 max-w-prose leading-relaxed text-muted">
@@ -157,6 +159,17 @@ export default async function ContactPage() {
           )}
         </aside>
       </Container>
+
+      <JsonLd
+        data={pageEntityData({
+          company,
+          indexable,
+          path: "/contacto",
+          type: "ContactPage",
+          name: "Contacto",
+          description: `Cómo presentarte a un puesto en ${company.brand.name} o contactar por una consulta sobre ventilación, climatización y aire acondicionado en ${company.location.city}.`,
+        })}
+      />
     </>
   );
 }

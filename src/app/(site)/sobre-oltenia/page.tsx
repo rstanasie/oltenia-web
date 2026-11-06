@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ButtonLink } from "@/components/Button";
 import { Container } from "@/components/Container";
+import { JsonLd } from "@/components/JsonLd";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { getCompany } from "@/content/company";
 import { getSeoSettings } from "@/content/pages";
 import { approvedPhotos } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
 import { envSite, isIndexable } from "@/lib/site";
+import { pageEntityData } from "@/lib/structured-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [company, seo] = await Promise.all([getCompany(), getSeoSettings()]);
@@ -20,6 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AboutPage() {
   const company = await getCompany();
+  const indexable = isIndexable(envSite, company.publication.approved);
   const { team } = company.intro;
   const teamPhotos = [...company.photos.team, ...company.photos.workplace];
 
@@ -27,8 +30,7 @@ export default async function AboutPage() {
     <>
       <div className="pt-14 sm:pt-20">
         <Container>
-          <p className="text-sm font-bold uppercase tracking-[0.14em] text-accent">Quiénes somos</p>
-          <h1 className="mt-2 text-3xl font-bold sm:text-4xl">Equipo</h1>
+          <h1 className="text-3xl font-bold sm:text-4xl">Equipo</h1>
           {team.length > 0 ? (
             <div className="mt-4 space-y-4 text-lg leading-relaxed text-muted">
               {team.map((p) => (
@@ -85,7 +87,7 @@ export default async function AboutPage() {
         <Container>
           <section
             aria-labelledby="unete-titulo"
-            className="flex flex-col gap-5 rounded-xl border-l-8 border-accent bg-white p-8 shadow-sm ring-1 ring-line sm:flex-row sm:items-center sm:justify-between"
+            className="flex flex-col gap-5 rounded-xl bg-white p-8 shadow-sm ring-1 ring-line sm:flex-row sm:items-center sm:justify-between"
           >
             <div>
               <h2 id="unete-titulo" className="text-2xl font-bold">
@@ -99,6 +101,17 @@ export default async function AboutPage() {
           </section>
         </Container>
       </div>
+
+      <JsonLd
+        data={pageEntityData({
+          company,
+          indexable,
+          path: "/sobre-oltenia",
+          type: "AboutPage",
+          name: "Quiénes somos",
+          description: `Conoce al equipo de ${company.brand.name}.`,
+        })}
+      />
     </>
   );
 }

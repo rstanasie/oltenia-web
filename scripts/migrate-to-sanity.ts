@@ -128,7 +128,8 @@ async function main() {
   await ensureDocument("homePage", "homePage", async () => ({
     heroEyebrow: "Base en Zaragoza · alcance nacional",
     heroHeadline: "Ventilación y climatización",
-    heroSubtext: "Instalamos sistemas de climatización y ventilación. Conoce nuestro trabajo y descubre cómo formar parte del equipo.",
+    heroSubtext:
+      "Instalamos sistemas de climatización y ventilación con base en Zaragoza y alcance regional. Conoce nuestro trabajo y descubre cómo formar parte del equipo.",
     primaryCtaLabel: "Trabaja con nosotros",
     secondaryCtaLabel: "Conoce nuestros servicios",
   }));
@@ -144,9 +145,9 @@ async function main() {
 
   await ensureDocument("recruitmentPage", "recruitmentPage", async () => ({
     heroEyebrow: `Empleo · Zaragoza`,
-    heroHeadline: "Un oficio que se aprende trabajando.",
+    heroHeadline: "Un oficio que se aprende trabajando",
     heroSubtext:
-      "Detrás de cada instalación hay conocimientos, precisión y experiencia. Descubre cómo es trabajar en ventilación y climatización y todo lo que puedes llegar a aprender.",
+      "Detrás de cada instalación hay conocimientos, precisión y experiencia. Descubre cómo es trabajar en ventilación y climatización en Zaragoza y todo lo que puedes llegar a aprender",
     primaryCtaLabel: "Puestos abiertos",
   }));
 
@@ -315,13 +316,11 @@ async function main() {
   }
 
   // ---- Vacancies ----
-  // Provisional editorial salary bands (owner-directed, Nov 2026 revision — narrower
-  // €20k–€30k spread than the previous draft). NOT verified contractual offers.
-  // Convenio Colectivo de Industria, Tecnología y Servicios del Metal de Zaragoza:
-  // two independent secondary sources reported a convenio-minimum annual gross pay for
-  // Peón of ~€20,198–€21,274 — meaning this band's €20,000 floor may sit at or just
-  // below that minimum. Flagged in CONTENT_CHECKLIST.md for owner/gestoría verification
-  // before these are treated as confirmed offers; raise the floor if confirmed below.
+  // Salary removed (2026-11-07, owner-directed): no salaryRange is seeded on any
+  // vacancy below. The "Salario" section on each /puestos/[slug] page and the
+  // JobPosting baseSalary already hide themselves automatically when salaryRange
+  // is empty, so this is a placeholder for the next version — fill salaryRange in
+  // Sanity Studio once confirmed bands are approved, see CONTENT_CHECKLIST.md.
   const applicationInstructions = "Adjunta tu currículum en el siguiente formulario; no hace falta nada más para presentarte.";
 
   await ensureDocument("vacancy-peon-ayudante", "vacancy", async () => ({
@@ -345,7 +344,6 @@ async function main() {
       "Manejo de herramientas y materiales de conductos.",
       "Procedimientos de seguridad en obra.",
     ],
-    salaryRange: { min: 20000, max: 22000, period: "año", gross: true },
     applicationInstructions,
   }));
 
@@ -365,7 +363,6 @@ async function main() {
     essentialRequirements: ["Algo de experiencia previa en montaje o construcción.", "Atención al detalle y disposición a seguir indicaciones."],
     desirableRequirements: ["Conocimientos básicos de lectura de planos."],
     learningOpportunities: ["Montaje de conductos con precisión.", "Interpretación de planos técnicos.", "Técnicas de instalación en distintos tipos de obra."],
-    salaryRange: { min: 22000, max: 24000, period: "año", gross: true },
     applicationInstructions,
   }));
 
@@ -386,7 +383,6 @@ async function main() {
     essentialRequirements: ["Experiencia demostrable en montaje de conductos.", "Capacidad para trabajar con autonomía."],
     desirableRequirements: ["Experiencia en distintos tipos de edificio (naves, locales, viviendas)."],
     learningOpportunities: ["Planificación de una instalación completa.", "Resolución práctica de problemas en obra."],
-    salaryRange: { min: 24000, max: 27000, period: "año", gross: true },
     applicationInstructions,
   }));
 
@@ -407,7 +403,6 @@ async function main() {
     essentialRequirements: ["Experiencia consolidada en instalación de conductos.", "Capacidad para resolver problemas técnicos sin supervisión."],
     desirableRequirements: ["Experiencia apoyando o coordinando a otros instaladores."],
     learningOpportunities: ["Instalaciones de alta complejidad técnica.", "Coordinación práctica de tareas en obra."],
-    salaryRange: { min: 27000, max: 30000, period: "año", gross: true },
     applicationInstructions,
   }));
 
