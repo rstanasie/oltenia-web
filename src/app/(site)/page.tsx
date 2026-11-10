@@ -46,7 +46,7 @@ export default async function HomePage() {
               <ButtonLink href="/servicios" variant="secondary-dark">
                 {home.secondaryCtaLabel}
               </ButtonLink>
-              <ButtonLink href="/trabaja-con-nosotros" className="text-lg sm:px-7">
+              <ButtonLink href="/trabaja-con-nosotros#puestos-abiertos" className="text-lg sm:px-7">
                 {home.primaryCtaLabel}
               </ButtonLink>
             </div>

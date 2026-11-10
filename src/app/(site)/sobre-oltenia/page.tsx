@@ -95,7 +95,7 @@ export default async function AboutPage() {
               </h2>
               <p className="mt-2 text-lg leading-relaxed">Cuéntanos tu experiencia en ventilación o climatización.</p>
             </div>
-            <ButtonLink href="/trabaja-con-nosotros" className="shrink-0">
+            <ButtonLink href="/trabaja-con-nosotros#puestos-abiertos" className="shrink-0">
               Trabaja con nosotros
             </ButtonLink>
           </section>

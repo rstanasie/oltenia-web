@@ -11,7 +11,6 @@ import { PreviewBanner } from "@/components/PreviewBanner";
 import { getCompany } from "@/content/company";
 import { isIndexable } from "@/lib/site";
 import { localBusinessData, organizationData } from "@/lib/structured-data";
-import { SanityLive } from "@/sanity/lib/live";
 import { envSite } from "@/lib/site";
 import "../globals.css";
 
@@ -61,7 +60,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <Footer />
         <JsonLd data={organizationData(company, indexable)} />
         <JsonLd data={localBusinessData(company, indexable)} />
-        <SanityLive />
         {isDraftMode ? <VisualEditing /> : null}
       </body>
     </html>

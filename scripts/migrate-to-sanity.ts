@@ -81,7 +81,7 @@ async function main() {
   await ensureDocument("companyInfo", "companyInfo", async () => ({
     shortIntro: "Oltenia es una empresa de ventilación, climatización y aire acondicionado con sede en Zaragoza.",
     team: [
-      "Oltenia está dirigida por sus fundadores, Sorin y Mihaela Tanasie. Juntos reúnen más de 25 años de experiencia en el sector y comparten la responsabilidad de cada proyecto: desde las decisiones técnicas en obra hasta la organización que permite llevarlo adelante.",
+      "Oltenia está dirigida por sus fundadores, Sorin Filip Tanasie y Mihaela Milos Neagu. Juntos reúnen más de 25 años de experiencia en el sector y comparten la responsabilidad de cada proyecto: desde las decisiones técnicas en obra hasta la organización que permite llevarlo adelante.",
       "Además de la dirección, Oltenia cuenta con un equipo de profesionales contratados que llevan a cabo las instalaciones en cada proyecto.",
     ],
     history: [],
@@ -222,31 +222,30 @@ async function main() {
 
   // ---- Team members -----------------------------------------------------
   await ensureDocument("teamMember-sorin-tanasie", "teamMember", async () => ({
-    name: "Sorin Tanasie",
+    name: "Sorin Filip Tanasie",
     role: "Cofundador · Director técnico y ejecutivo",
     order: 1,
     bio: [
-      "Graduado en Electrónica y Computación por la Universidad de Craiova, Sorin comenzó su trayectoria en mantenimiento de instalaciones energéticas y, posteriormente, como responsable de mantenimiento de un buque de mercancías en Sudáfrica.",
-      "Tras llegar a España y trabajar brevemente en construcción, inició su recorrido en ventilación y climatización en Barajas. Allí adquirió la experiencia que le llevaría a emprender por cuenta propia.",
+      "Graduado en Ingeniería Industrial por la Universidad de Craiova, Sorin comenzó su trayectoria en mantenimiento de instalaciones energéticas y, posteriormente, como responsable de mantenimiento de un buque de mercancías en Sudáfrica.",
+      "Tras llegar a España y trabajar brevemente en construcción, inició su recorrido en ventilación y climatización en Zaragoza. Allí adquirió la experiencia que le llevaría a emprender por cuenta propia.",
       "Su trayectoria combina conocimientos técnicos, trabajo en obra y gestión de proyectos: una experiencia que hoy aporta a la dirección de Oltenia.",
     ],
-    photo: { ...(await uploadImage("/images/equipo/sorin-tanasie.jpg")), alt: "Sorin Tanasie, cofundador y director técnico y ejecutivo de Oltenia." },
+    photo: { ...(await uploadImage("/images/equipo/sorin-tanasie.jpg")), alt: "Sorin Filip Tanasie, cofundador y director técnico y ejecutivo de Oltenia." },
   }));
 
   await ensureDocument("teamMember-mihaela-tanasie", "teamMember", async () => ({
-    name: "Mihaela Tanasie",
+    name: "Mihaela Milos Neagu",
     role: "Cofundadora · Directora de administración y finanzas",
     order: 2,
     bio: [
       "Mihaela se encarga de la organización administrativa de Oltenia. Coordina las finanzas y la contabilidad, la contratación y la gestión de personal, así como los contratos, las compras y los pagos.",
-      "Antes de esta etapa, trabajó en el sector bancario en Craiova, en limpieza hospitalaria y en restauración, en establecimientos como La Piemontesa y Trastevere.",
-      "Esa experiencia en entornos distintos forma parte de su recorrido hasta asumir la gestión diaria de la empresa.",
+      "Antes de asumir estas responsabilidades, trabajó en banca en Craiova y en restauración en Zaragoza.",
     ],
-    photo: { ...(await uploadImage("/images/equipo/mihaela-tanasie.jpg")), alt: "Mihaela Tanasie, cofundadora y directora de administración y finanzas de Oltenia." },
+    photo: { ...(await uploadImage("/images/equipo/mihaela-tanasie.jpg")), alt: "Mihaela Milos Neagu, cofundadora y directora de administración y finanzas de Oltenia." },
   }));
 
   await ensureDocument("teamMember-victor", "teamMember", async () => ({
-    name: "Víctor Grumezescu",
+    name: "Víctor Nicolae Grumezescu",
     role: "Oficial de primera · 5 años en Oltenia",
     order: 3,
     bio: [

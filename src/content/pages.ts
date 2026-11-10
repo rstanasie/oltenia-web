@@ -16,7 +16,7 @@ import {
   type WorkingConditionsContent,
 } from "@/sanity/lib/mappers";
 import { SITE_QUERY, VACANCY_BY_SLUG_QUERY, VACANCY_SLUGS_QUERY } from "@/sanity/lib/queries";
-import { sanityFetch } from "@/sanity/lib/live";
+import { sanityFetch } from "@/sanity/lib/fetch";
 import { client } from "@/sanity/lib/client";
 
 /**
@@ -60,7 +60,7 @@ export async function getSeoSettings(): Promise<SeoSettingsContent> {
 /**
  * Used only from generateStaticParams, which runs at build time with no
  * request context — draftMode() (used internally by sanityFetch to resolve
- * live/preview state) isn't available there, so this uses the plain
+ * draft/published state) isn't available there, so this uses the plain
  * published-only client instead.
  */
 export async function getVacancySlugs(): Promise<string[]> {

@@ -41,12 +41,12 @@ Sanity que tenga acceso al proyecto).
    - Uno con rol **Editor** → `SANITY_API_WRITE_TOKEN` en `.env.local`. Solo se usa para
      `npm run sanity:migrate`, ejecutado desde tu máquina; nunca lo pongas en Vercel.
 4. En manage.sanity.io → tu proyecto → **API → CORS Origins**, añade (esto es necesario para que
-   `/studio` y la conexión en vivo del sitio —`<SanityLive />`— funcionen desde el navegador; las
-   páginas en sí se generan en el servidor y no lo necesitan):
+   `/studio` funcione desde el navegador; las páginas públicas se generan en el servidor y no lo
+   necesitan):
    - `http://localhost:3000` (permitir credenciales: sí)
    - tu dominio de producción cuando lo tengas, p. ej. `https://oltenia.es` (permitir credenciales: sí)
-   - opcional: `https://*.vercel.app` (permitir credenciales: sí), si quieres que las URLs Preview
-     de Vercel (una distinta por cada rama/PR) también tengan la conexión en vivo activa
+   - opcional: `https://*.vercel.app` (permitir credenciales: sí), si quieres usar `/studio` desde
+     las URLs Preview de Vercel (una distinta por cada rama/PR)
 5. Añade personas con acceso en **manage.sanity.io → tu proyecto → Members**. El plan gratuito de
    Sanity ("Free") incluye varios puestos de **Editor**; roles más avanzados (p. ej. permisos por
    tipo de documento) requieren un plan de pago — comprueba los límites actuales en tu panel antes
@@ -130,16 +130,19 @@ como si fueran un servicio actual, y no desactives la nota de archivo de esa pá
 
 ## Cómo se actualiza el sitio (sin redesplegar)
 
-El sitio usa la **Live Content API** de Sanity (paquete `next-sanity`, función `sanityFetch` +
-componente `<SanityLive />` en `src/app/(site)/layout.tsx`): cada página mantiene una conexión en
-vivo con Sanity, así que al publicar un cambio en Studio, el sitio lo refleja en segundos sin
-redesplegar ni esperar una compilación. No hay webhook que configurar ni mantener.
+Las páginas se generan en el servidor con `sanityFetch` (`src/sanity/lib/fetch.ts`), que lee el
+contenido publicado desde el CDN de Sanity y lo cachea 5 minutos (300 segundos). Al publicar un
+cambio en Studio, cada visitante lo verá en cuanto esa caché expire para la página que esté
+visitando — no es instantáneo ni garantiza que todos lo vean a los 5 minutos exactos, pero no
+requiere redesplegar, esperar una compilación, ni mantener un webhook. El navegador de los
+visitantes nunca contacta con la API de Sanity directamente (las imágenes siguen sirviéndose desde
+su CDN, `cdn.sanity.io`, que no tiene este problema).
 
 Previsualización de borradores (Draft Mode): `/api/draft-mode/enable` activa un modo que muestra
 contenido sin publicar (usado por el botón "Presentation"/previsualización de Sanity Studio);
-`/api/draft-mode/disable` lo desactiva. Los visitantes normales nunca ven borradores: sin modo
-borrador activado, `<SanityLive />` solo transmite contenido publicado, y no comparte ningún token
-con el navegador.
+`/api/draft-mode/disable` lo desactiva. Con Draft Mode activado, `sanityFetch` obtiene el borrador
+sin caché en cada petición. Los visitantes normales nunca ven borradores: sin modo borrador
+activado, siempre reciben contenido publicado.
 
 ## Variables de entorno
 
@@ -236,7 +239,7 @@ sanity.config.ts     configuración de Sanity Studio (esquema, estructura, plugi
 sanity.cli.ts         configuración para los comandos `sanity` (si se usan)
 src/
   app/
-    (site)/          rutas del sitio público, con su propio layout (Header/Footer/SanityLive)
+    (site)/          rutas del sitio público, con su propio layout (Header/Footer)
     studio/          Studio embebido en /studio, con su propio layout (sin Header/Footer)
     api/draft-mode/  activar/desactivar la vista previa de borradores
     robots.ts, sitemap.ts, icon.svg, apple-icon.tsx, social-preview.png/route.tsx

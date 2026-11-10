@@ -10,7 +10,7 @@ import { LightboxProvider } from "@/components/Lightbox";
 import { NarrativePhoto } from "@/components/NarrativePhoto";
 import { VacancyCards } from "@/components/VacancyCards";
 import { getCompany } from "@/content/company";
-import { getRecruitmentPage, getSeoSettings, getWorkingConditions } from "@/content/pages";
+import { getSeoSettings, getWorkingConditions } from "@/content/pages";
 import { findPhoto, openVacancies, publicAddress, recruitmentChannels } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
 import { envSite, isIndexable } from "@/lib/site";
@@ -47,7 +47,7 @@ function Fact({ label, children }: { label: string; children: ReactNode }) {
 }
 
 export default async function RecruitmentPage() {
-  const [company, hero, workingConditions] = await Promise.all([getCompany(), getRecruitmentPage(), getWorkingConditions()]);
+  const [company, workingConditions] = await Promise.all([getCompany(), getWorkingConditions()]);
   const indexable = isIndexable(envSite, company.publication.approved);
   const vacancies = openVacancies(company);
   const channels = recruitmentChannels(company);
@@ -55,38 +55,16 @@ export default async function RecruitmentPage() {
   const projects = company.photos.projects;
   const pick = (filename: string) => findPhoto(projects, filename);
 
-  const heroPhoto = pick("instalacion-conductos-fachada-01.jpg");
   const discoverPhoto = pick("instalacion-conductos-fachada-01.jpg");
 
   return (
     <LightboxProvider>
-      {/* HERO */}
-      <section className="on-dark relative isolate overflow-hidden bg-navy-900 text-white">
-        {heroPhoto ? (
-          <div className="absolute inset-0 -z-10">
-            <NarrativePhoto photo={heroPhoto} aspect="aspect-auto h-full" sizes="100vw" priority />
-            <div className="absolute inset-0 bg-gradient-to-r from-navy-950/95 via-navy-950/80 to-navy-950/40" />
-          </div>
-        ) : null}
-        <Container className="py-20 sm:py-28 lg:py-32">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl font-extrabold leading-[1.05] text-white sm:text-6xl">{hero.heroHeadline}</h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-navy-200 sm:text-xl">{hero.heroSubtext}</p>
-            <div className="mt-10">
-              <ButtonLink href="/trabaja-con-nosotros#puestos" className="text-lg sm:px-7">
-                {hero.primaryCtaLabel}
-              </ButtonLink>
-            </div>
-          </div>
-        </Container>
-      </section>
-
       {/* A. PUESTOS ABIERTOS */}
-      <section id="puestos" aria-labelledby="puestos-titulo" className="scroll-mt-16 bg-white py-16 sm:py-24">
+      <section id="puestos-abiertos" aria-labelledby="puestos-titulo" className="scroll-mt-24 bg-white py-16 sm:py-24">
         <Container>
-          <h2 id="puestos-titulo" className="text-3xl font-bold sm:text-4xl">
+          <h1 id="puestos-titulo" className="text-3xl font-bold sm:text-4xl">
             Puestos abiertos
-          </h2>
+          </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
             Estas son las formas en las que puedes incorporarte a los equipos de instalación de ventilación y
             climatización de {company.brand.name}, según tu nivel de experiencia.
@@ -103,9 +81,6 @@ export default async function RecruitmentPage() {
               preocupes: el requerimiento más importante es tu actitud y tus ganas de aprender el oficio.
             </p>
             <div className="mt-5 grid gap-6 lg:grid-cols-2">
-              <div className="rounded-lg bg-paper p-6">
-                <ApplicationForm channels={channels} brandName={company.brand.name} />
-              </div>
               <DirectContactCard
                 phone={company.customerContact.phone}
                 whatsapp={company.customerContact.whatsapp}
@@ -113,6 +88,9 @@ export default async function RecruitmentPage() {
                 address={address}
                 mapUrl={company.customerContact.mapUrl}
               />
+              <div className="rounded-lg bg-paper p-6">
+                <ApplicationForm channels={channels} brandName={company.brand.name} />
+              </div>
             </div>
           </div>
         </Container>
@@ -139,9 +117,9 @@ export default async function RecruitmentPage() {
                 ))}
               </ul>
               <p className="mt-6 leading-relaxed text-muted">
-                Si quieres ver cómo se trabaja una pieza en detalle, lo explicamos en{" "}
-                <Link href="/en-detalle" className="font-semibold text-accent underline-offset-4 hover:underline">
-                  En detalle
+                Si quieres ver todo lo que hacemos, lo explicamos en{" "}
+                <Link href="/servicios" className="font-semibold text-accent underline-offset-4 hover:underline">
+                  Qué hacemos
                 </Link>
                 .
               </p>

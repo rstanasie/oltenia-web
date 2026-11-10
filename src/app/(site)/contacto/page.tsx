@@ -119,7 +119,7 @@ export default async function ContactPage() {
             </p>
           ) : null}
 
-          <Link href="/trabaja-con-nosotros#puestos" className="mt-6 inline-flex min-h-11 items-center font-semibold text-accent underline-offset-4 hover:underline">
+          <Link href="/trabaja-con-nosotros#puestos-abiertos" className="mt-6 inline-flex min-h-11 items-center font-semibold text-accent underline-offset-4 hover:underline">
             Ver puestos abiertos<span aria-hidden="true" className="ml-1">→</span>
           </Link>
         </section>

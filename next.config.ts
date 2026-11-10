@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   typedRoutes: true,
   turbopack: { root: process.cwd() },
+  experimental: {
+    agentUpgrade: "security",
+  },
   images: {
     remotePatterns: [{ protocol: "https", hostname: "cdn.sanity.io", pathname: "/images/**" }],
   },

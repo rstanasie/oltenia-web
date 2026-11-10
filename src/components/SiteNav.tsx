@@ -7,7 +7,8 @@ import { buttonClasses } from "@/components/Button";
 import { enDetalleNav, mainNav, recruitmentNav } from "@/lib/navigation";
 
 function isCurrent(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`);
+  const [path] = href.split("#");
+  return pathname === path || pathname.startsWith(`${path}/`);
 }
 
 export function SiteNav() {
